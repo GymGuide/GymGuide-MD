@@ -2,18 +2,18 @@ package com.example.gymguide
 
 object DataSource {
     var students = generateDummyStudents()
-    private fun generateDummyStudents(): ArrayList<Student> {
-        val students = ArrayList<Student>()
-        students.add(Student("Monkey D. Luffy", "SHP01"))
-        students.add(Student("Roronoa Zoro", "SHP02"))
-        students.add(Student("Nami", "SHP03"))
-        students.add(Student("Usopp", "SHP04"))
-        students.add(Student("Sanji", "SHP05"))
-        students.add(Student("Tony Tony Chopper", "SHP06"))
-        students.add(Student("Nico Robin", "SHP07"))
-        students.add(Student("Franky", "SHP08"))
-        students.add(Student("Brook", "SHP09"))
-        students.add(Student("Jimbei", "SHP010"))
-        return students
+    private fun generateDummyStudents(): ArrayList<Exercise> {
+        val exercises = ArrayList<Exercise>()
+        exercises.add(Exercise("Monkey D. Luffy", "SHP01"))
+        exercises.add(Exercise("Roronoa Zoro", "SHP02"))
+        exercises.add(Exercise("Nami", "SHP03"))
+        exercises.add(Exercise("Usopp", "SHP04"))
+        exercises.add(Exercise("Sanji", "SHP05"))
+        exercises.add(Exercise("Tony Tony Chopper", "SHP06"))
+        exercises.add(Exercise("Nico Robin", "SHP07"))
+        exercises.add(Exercise("Franky", "SHP08"))
+        exercises.add(Exercise("Brook", "SHP09"))
+        exercises.add(Exercise("Jimbei", "SHP010"))
+        return exercises
     }
 }

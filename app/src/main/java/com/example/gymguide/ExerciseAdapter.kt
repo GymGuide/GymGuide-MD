@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ExerciseAdapter(private val students: ArrayList<Student>) :
+class ExerciseAdapter(private val exercises: ArrayList<Exercise>) :
     RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
     private var clickListener: ClickListener? = null
     fun setClickListener(clickListener: ClickListener?) {
@@ -20,12 +20,12 @@ class ExerciseAdapter(private val students: ArrayList<Student>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val student = students[position]
+        val student = exercises[position]
         holder.setData(student)
     }
 
     override fun getItemCount(): Int {
-        return students.size
+        return exercises.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,14 +37,14 @@ class ExerciseAdapter(private val students: ArrayList<Student>) :
             tvDesc = itemView.findViewById(R.id.tv_exercise_desc)
         }
 
-        fun setData(student: Student) {
-            tvName.text = student.name
-            tvDesc.text = student.nim
-            itemView.setOnClickListener { _: View? -> clickListener!!.onItemClicked(student) }
+        fun setData(exercise: Exercise) {
+            tvName.text = exercise.name
+            tvDesc.text = exercise.nim
+            itemView.setOnClickListener { _: View? -> clickListener!!.onItemClicked(exercise) }
         }
     }
 
     interface ClickListener {
-        fun onItemClicked(student: Student?)
+        fun onItemClicked(exercise: Exercise?)
     }
 }

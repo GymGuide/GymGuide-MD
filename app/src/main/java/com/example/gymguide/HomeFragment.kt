@@ -34,8 +34,8 @@ class HomeFragment : Fragment() {
         // set adapter to rv
         val adapter = ExerciseAdapter(DataSource.students)
         adapter.setClickListener(object : ExerciseAdapter.ClickListener {
-            override fun onItemClicked(student: Student?) {
-                Toast.makeText(view.context, student?.name, Toast.LENGTH_SHORT).show()
+            override fun onItemClicked(exercise: Exercise?) {
+                Toast.makeText(view.context, exercise?.name, Toast.LENGTH_SHORT).show()
             }
         })
         binding.rvExercise.adapter = adapter

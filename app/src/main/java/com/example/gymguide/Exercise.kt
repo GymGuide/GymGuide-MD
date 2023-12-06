@@ -6,18 +6,18 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.Parceler
 
 @Parcelize
-data class Student(val name: String?, val nim: String?) : Parcelable {
+data class Exercise(val name: String?, val nim: String?) : Parcelable {
 
-    private companion object : Parceler<Student> {
-        override fun Student.write(parcel: Parcel, flags: Int) {
+    private companion object : Parceler<Exercise> {
+        override fun Exercise.write(parcel: Parcel, flags: Int) {
             parcel.writeString(name)
             parcel.writeString(nim)
         }
 
-        override fun create(parcel: Parcel): Student {
+        override fun create(parcel: Parcel): Exercise {
             val name = parcel.readString()
             val nim = parcel.readString()
-            return Student(name, nim)
+            return Exercise(name, nim)
         }
     }
 }
