@@ -1,332 +1,178 @@
-package com.example.gymguide
+    package com.example.gymguide
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.graphics.RectF
-import android.os.Bundle
-import android.util.Log
-import android.util.Size
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import com.example.gymguide.databinding.ActivityCameraBinding
-import org.tensorflow.lite.DataType
-import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.nnapi.NnApiDelegate
-import org.tensorflow.lite.support.common.FileUtil
-import org.tensorflow.lite.support.common.ops.NormalizeOp
-import org.tensorflow.lite.support.image.ImageProcessor
-import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.image.ops.ResizeOp
-import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp
-import org.tensorflow.lite.support.image.ops.Rot90Op
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
-import kotlin.math.min
-import kotlin.random.Random
+    import android.Manifest
+    import android.app.Activity
+    import android.content.Intent
+    import android.content.pm.PackageManager
+    import android.graphics.Bitmap
+    import android.media.ThumbnailUtils
+    import android.net.Uri
+    import android.os.Bundle
+    import android.provider.MediaStore
+    import androidx.activity.result.ActivityResultLauncher
+    import androidx.activity.result.contract.ActivityResultContracts
+    import androidx.appcompat.app.AppCompatActivity
+    import com.example.gymguide.databinding.ActivityCameraBinding
+    import com.example.gymguide.ml.GymEquipmentV3
+    import org.tensorflow.lite.DataType
+    import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+    import java.io.IOException
+    import java.nio.ByteBuffer
+    import java.nio.ByteOrder
 
 
-/** Activity that displays the camera and performs object detection on the incoming frames */
-class CameraActivity : AppCompatActivity() {
+    /** Activity that displays the camera and performs object detection on the incoming frames */
+    class CameraActivity : AppCompatActivity() {
+        private var imageSize = 150
+        private lateinit var binding: ActivityCameraBinding
+        // ActivityResultLauncher for camera capture
+        private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+            private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            binding = ActivityCameraBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-    private lateinit var activityCameraBinding: ActivityCameraBinding
-
-    private lateinit var bitmapBuffer: Bitmap
-
-    private val executor = Executors.newSingleThreadExecutor()
-    private val permissions = listOf(Manifest.permission.CAMERA)
-    private val permissionsRequestCode = Random.nextInt(0, 10000)
-
-    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
-    private val isFrontFacing get() = lensFacing == CameraSelector.LENS_FACING_FRONT
-
-    private var pauseAnalysis = false
-    private var imageRotationDegrees: Int = 0
-    private val tfImageBuffer = TensorImage(DataType.UINT8)
-
-    private val tfImageProcessor by lazy {
-        val cropSize = minOf(bitmapBuffer.width, bitmapBuffer.height)
-        ImageProcessor.Builder()
-            .add(ResizeWithCropOrPadOp(cropSize, cropSize))
-            .add(ResizeOp(
-                tfInputSize.height, tfInputSize.width, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-            .add(Rot90Op(-imageRotationDegrees / 90))
-            .add(NormalizeOp(0f, 1f))
-            .build()
-    }
-
-    private val nnApiDelegate by lazy  {
-        NnApiDelegate()
-    }
-
-    private val tflite by lazy {
-        Interpreter(
-            FileUtil.loadMappedFile(this, MODEL_PATH),
-            Interpreter.Options().addDelegate(nnApiDelegate))
-    }
-    private val detector by lazy {
-        ObjectDetectionHelper(
-            tflite,
-            FileUtil.loadLabels(this, LABELS_PATH)
-        )
-    }
-
-    private val tfInputSize by lazy {
-        val inputIndex = 0
-        val inputShape = tflite.getInputTensor(inputIndex).shape()
-        Size(inputShape[2], inputShape[1]) // Order of axis is: {1, height, width, 3}
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activityCameraBinding = ActivityCameraBinding.inflate(layoutInflater)
-        setContentView(activityCameraBinding.root)
-
-        activityCameraBinding.cameraCaptureButton.setOnClickListener {
-
-            // Disable all camera controls
-            it.isEnabled = false
-
-            if (pauseAnalysis) {
-                // If image analysis is in paused state, resume it
-                pauseAnalysis = false
-                activityCameraBinding.imagePredicted.visibility = View.GONE
-
-            } else {
-                // Otherwise, pause image analysis and freeze image
-                pauseAnalysis = true
-                val matrix = Matrix().apply {
-                    postRotate(imageRotationDegrees.toFloat())
-                    if (isFrontFacing) postScale(-1f, 1f)
-                }
-                val uprightImage = Bitmap.createBitmap(
-                    bitmapBuffer, 0, 0, bitmapBuffer.width, bitmapBuffer.height, matrix, true)
-                activityCameraBinding.imagePredicted.setImageBitmap(uprightImage)
-                activityCameraBinding.imagePredicted.visibility = View.VISIBLE
+            // Initialize the ActivityResultLauncher
+            cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                onCameraActivityResult(result)
             }
-            // Re-enable camera controls
-            it.isEnabled = true
-        }
-    }
+            galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                onGalleryActivityResult(result)
+            }
 
-    override fun onDestroy() {
-
-        // Terminate all outstanding analyzing jobs (if there is any).
-        executor.apply {
-            shutdown()
-            awaitTermination(1000, TimeUnit.MILLISECONDS)
-        }
-
-        // Release TFLite resources.
-        tflite.close()
-        nnApiDelegate.close()
-
-        super.onDestroy()
-    }
-
-    /** Declare and bind preview and analysis use cases */
-    @SuppressLint("UnsafeExperimentalUsageError")
-    private fun bindCameraUseCases() = activityCameraBinding.viewFinder.post {
-
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener ({
-
-            // Camera provider is now guaranteed to be available
-            val cameraProvider = cameraProviderFuture.get()
-
-            // Set up the view finder use case to display camera preview
-            val preview = Preview.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(activityCameraBinding.viewFinder.display.rotation)
-                .build()
-
-            // Set up the image analysis use case which will process frames in real time
-            val imageAnalysis = ImageAnalysis.Builder()
-                .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(activityCameraBinding.viewFinder.display.rotation)
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
-                .build()
-
-            var frameCounter = 0
-            var lastFpsTimestamp = System.currentTimeMillis()
-
-            imageAnalysis.setAnalyzer(executor, ImageAnalysis.Analyzer { image ->
-                if (!::bitmapBuffer.isInitialized) {
-                    // The image rotation and RGB image buffer are initialized only once
-                    // the analyzer has started running
-                    imageRotationDegrees = image.imageInfo.rotationDegrees
-                    bitmapBuffer = Bitmap.createBitmap(
-                        image.width, image.height, Bitmap.Config.ARGB_8888)
+            binding.cameraButton.setOnClickListener {
+                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    // Start the activity using the launcher
+                    cameraLauncher.launch(cameraIntent)
+                } else {
+                    requestPermissions(arrayOf(Manifest.permission.CAMERA), 100)
                 }
+            }
 
-                // Early exit: image analysis is in paused state
-                if (pauseAnalysis) {
-                    image.close()
-                    return@Analyzer
+            binding.galleryButton.setOnClickListener {
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                // Start the activity using the launcher
+                galleryLauncher.launch(galleryIntent)
+            }
+        }
+
+        private fun onCameraActivityResult(result: androidx.activity.result.ActivityResult) {
+            if (result.resultCode == RESULT_OK) {
+                val data: Intent? = result.data
+                if (data != null && data.hasExtra("data")) {
+                    var image = data.extras?.get("data") as Bitmap?
+                    val dimension = image!!.width.coerceAtMost(image.height)
+                    image = ThumbnailUtils.extractThumbnail(image, dimension, dimension)
+                    binding.imageView.setImageBitmap(image)
+                    // Resize the image before classification
+                    image = resizeImage(image!!, imageSize)
+                    classifyImage(image)
                 }
+            }
+        }
 
-                // Copy out RGB bits to our shared buffer
-                image.use { bitmapBuffer.copyPixelsFromBuffer(image.planes[0].buffer)  }
-
-                // Process the image in Tensorflow
-                val tfImage =  tfImageProcessor.process(tfImageBuffer.apply { load(bitmapBuffer) })
-
-                // Perform the object detection for the current frame
-                val predictions = detector.predict(tfImage)
-
-                // Report only the top prediction
-                reportPrediction(predictions.maxByOrNull { it.score })
-
-                // Compute the FPS of the entire pipeline
-                val frameCount = 10
-                if (++frameCounter % frameCount == 0) {
-                    frameCounter = 0
-                    val now = System.currentTimeMillis()
-                    val delta = now - lastFpsTimestamp
-                    val fps = 1000 * frameCount.toFloat() / delta
-                    Log.d(TAG, "FPS: ${"%.02f".format(fps)} with tensorSize: ${tfImage.width} x ${tfImage.height}")
-                    lastFpsTimestamp = now
+        private fun onGalleryActivityResult(result: androidx.activity.result.ActivityResult) {
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                if (data != null && data.data != null) {
+                    val dat: Uri = data.data!!
+                    var image: Bitmap?
+                    try {
+                        image = MediaStore.Images.Media.getBitmap(contentResolver, dat)
+                        binding.imageView.setImageBitmap(image)
+                        image = Bitmap.createScaledBitmap(image!!, imageSize, imageSize, false)
+                        classifyImage(image)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        // Handle the exception
+                    }
                 }
-            })
-
-            // Create a new camera selector each time, enforcing lens facing
-            val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-
-            // Apply declared configs to CameraX using the same lifecycle owner
-            cameraProvider.unbindAll()
-            cameraProvider.bindToLifecycle(
-                this as LifecycleOwner, cameraSelector, preview, imageAnalysis)
-
-            // Use the camera object to link our preview use case with the view
-            preview.setSurfaceProvider(activityCameraBinding.viewFinder.surfaceProvider)
-
-        }, ContextCompat.getMainExecutor(this))
-    }
-
-    private fun reportPrediction(
-        prediction: ObjectDetectionHelper.ObjectPrediction?
-    ) = activityCameraBinding.viewFinder.post {
-
-        // Early exit: if prediction is not good enough, don't report it
-        if (prediction == null || prediction.score < ACCURACY_THRESHOLD) {
-            activityCameraBinding.boxPrediction.visibility = View.GONE
-            activityCameraBinding.textPrediction.visibility = View.GONE
-            return@post
+            }
         }
 
-        // Location has to be mapped to our local coordinates
-        val location = mapOutputCoordinates(prediction.location)
+        private fun resizeImage(image: Bitmap, targetSize: Int): Bitmap {
+            val aspectRatio: Float = image.width.toFloat() / image.height.toFloat()
+            val targetWidth: Int
+            val targetHeight: Int
 
-        // Update the text and UI
-        activityCameraBinding.textPrediction.text = "${"%.2f".format(prediction.score)} ${prediction.label}"
-        (activityCameraBinding.boxPrediction.layoutParams as ViewGroup.MarginLayoutParams).apply {
-            topMargin = location.top.toInt()
-            leftMargin = location.left.toInt()
-            width = min(activityCameraBinding.viewFinder.width, location.right.toInt() - location.left.toInt())
-            height = min(activityCameraBinding.viewFinder.height, location.bottom.toInt() - location.top.toInt())
+            if (image.width >= image.height) {
+                targetWidth = targetSize
+                targetHeight = (targetSize / aspectRatio).toInt()
+            } else {
+                targetWidth = (targetSize * aspectRatio).toInt()
+                targetHeight = targetSize
+            }
+
+            return Bitmap.createScaledBitmap(image, targetWidth, targetHeight, false)
         }
+        private fun classifyImage(image: Bitmap) {
+            try {
+                val model: GymEquipmentV3 = GymEquipmentV3.newInstance(applicationContext)
+                // Creates inputs for reference.
+                val inputFeature0 =
+                    TensorBuffer.createFixedSize(intArrayOf(1, 150, 150, 3), DataType.FLOAT32)
+                val byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3)
+                byteBuffer.order(ByteOrder.nativeOrder())
+                val intValues = IntArray(imageSize * imageSize)
+                image.getPixels(intValues, 0, image.width, 0, 0, image.width, image.height)
+                var pixel = 0
+                //iterate over each pixel and extract R, G, and B values. Add those values individually to the byte buffer.
+                for (i in 0 until imageSize) {
+                    for (j in 0 until imageSize) {
+                        val `val` = intValues[pixel++] // RGB
+                        byteBuffer.putFloat((`val` shr 16 and 0xFF) * (1f / 1))
+                        byteBuffer.putFloat((`val` shr 8 and 0xFF) * (1f / 1))
+                        byteBuffer.putFloat((`val` and 0xFF) * (1f / 1))
+                    }
+                }
+                inputFeature0.loadBuffer(byteBuffer)
 
-        // Make sure all UI elements are visible
-        activityCameraBinding.boxPrediction.visibility = View.VISIBLE
-        activityCameraBinding.textPrediction.visibility = View.VISIBLE
-    }
+                // Runs model inference and gets result.
+                val outputs: GymEquipmentV3.Outputs = model.process(inputFeature0)
+                val outputFeature0: TensorBuffer = outputs.outputFeature0AsTensorBuffer
+                val confidences = outputFeature0.floatArray
+                // find the index of the class with the biggest confidence.
+                var maxPos = 0
+                var maxConfidence = 0f
+                for (i in confidences.indices) {
+                    if (confidences[i] > maxConfidence) {
+                        maxConfidence = confidences[i]
+                        maxPos = i
+                    }
+                }
+                val classes = arrayOf(
+                    "abdominal-machine",
+                    "arm-curl",
+                    "arm-extension",
+                    "back-extension",
+                    "back-row-machine",
+                    "bench-press",
+                    "cable-lat-pulldown",
+                    "chest-fly",
+                    "chest-press",
+                    "dip-chin-assist",
+                    "hip-abduction-adduction",
+                    "incline-bench",
+                    "lat-pulldown",
+                    "leg-extension",
+                    "leg-press",
+                    "lying-down-leg-curl",
+                    "overhead-shoulder-press",
+                    "pulley-machine",
+                    "seated-cable-row",
+                    "seated-leg-curl",
+                    "smith-machine",
+                    "squat-rack",
+                    "torso-rotation-machine"
+                )
+                binding.tvResult.text = classes[maxPos]
 
-    /**
-     * Helper function used to map the coordinates for objects coming out of
-     * the model into the coordinates that the user sees on the screen.
-     */
-    private fun mapOutputCoordinates(location: RectF): RectF {
-
-        // Step 1: map location to the preview coordinates
-        val previewLocation = RectF(
-            location.left * activityCameraBinding.viewFinder.width,
-            location.top * activityCameraBinding.viewFinder.height,
-            location.right * activityCameraBinding.viewFinder.width,
-            location.bottom * activityCameraBinding.viewFinder.height
-        )
-
-        // Step 2: compensate for camera sensor orientation and mirroring
-        val isFrontFacing = lensFacing == CameraSelector.LENS_FACING_FRONT
-        val correctedLocation = if (isFrontFacing) {
-            RectF(
-                activityCameraBinding.viewFinder.width - previewLocation.right,
-                previewLocation.top,
-                activityCameraBinding.viewFinder.width - previewLocation.left,
-                previewLocation.bottom)
-        } else {
-            previewLocation
-        }
-
-        // Step 3: compensate for 1:1 to 4:3 aspect ratio conversion + small margin
-        val margin = 0.1f
-        val requestedRatio = 4f / 3f
-        val midX = (correctedLocation.left + correctedLocation.right) / 2f
-        val midY = (correctedLocation.top + correctedLocation.bottom) / 2f
-        return if (activityCameraBinding.viewFinder.width < activityCameraBinding.viewFinder.height) {
-            RectF(
-                midX - (1f + margin) * requestedRatio * correctedLocation.width() / 2f,
-                midY - (1f - margin) * correctedLocation.height() / 2f,
-                midX + (1f + margin) * requestedRatio * correctedLocation.width() / 2f,
-                midY + (1f - margin) * correctedLocation.height() / 2f
-            )
-        } else {
-            RectF(
-                midX - (1f - margin) * correctedLocation.width() / 2f,
-                midY - (1f + margin) * requestedRatio * correctedLocation.height() / 2f,
-                midX + (1f - margin) * correctedLocation.width() / 2f,
-                midY + (1f + margin) * requestedRatio * correctedLocation.height() / 2f
-            )
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Request permissions each time the app resumes, since they can be revoked at any time
-        if (!hasPermissions(this)) {
-            ActivityCompat.requestPermissions(
-                this, permissions.toTypedArray(), permissionsRequestCode)
-        } else {
-            bindCameraUseCases()
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == permissionsRequestCode && hasPermissions(this)) {
-            bindCameraUseCases()
-        } else {
-            finish() // If we don't have the required permissions, we can't run
+                // Releases model resources if no longer used.
+                model.close()
+            } catch (e: IOException) {
+                // TODO Handle the exception
+            }
         }
     }
-
-    /** Convenience method used to check if all permissions required by this app are granted */
-    private fun hasPermissions(context: Context) = permissions.all {
-        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-    }
-
-    companion object {
-        private val TAG = CameraActivity::class.java.simpleName
-
-        private const val ACCURACY_THRESHOLD = 0.5f
-        private const val MODEL_PATH = "coco_ssd_mobilenet_v1_1.0_quant.tflite"
-        private const val LABELS_PATH = "coco_ssd_mobilenet_v1_1.0_labels.txt"
-    }
-}
