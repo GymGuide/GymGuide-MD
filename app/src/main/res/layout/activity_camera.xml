@@ -8,10 +8,10 @@
     android:background="@color/black"
     tools:context=".ui.CameraActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cameraButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_above="@id/galleryButton"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="16dp"
@@ -23,15 +23,14 @@
         android:text="Take Picture"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_result" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/galleryButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
@@ -41,7 +40,6 @@
         android:text="Launch Gallery"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cameraButton" />

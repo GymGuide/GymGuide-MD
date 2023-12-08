@@ -90,13 +90,15 @@ on how to perform it to help you on your transformation journey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/getStartedButton"
+
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:layout_marginEnd="5dp"
+            android:background="@drawable/button_rectangle"
             android:backgroundTint="@color/yellow_menu"
             android:fontFamily="@font/roboto_bold"
             android:letterSpacing="0"
@@ -104,14 +106,15 @@ on how to perform it to help you on your transformation journey"
             android:textAllCaps="false"
             android:textColor="@color/black" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginButton"
-            android:backgroundTint="@color/white"
-            android:layout_width="135dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:layout_marginStart="5dp"
+            android:background="@drawable/button_rectangle"
+            android:backgroundTint="@color/white"
             android:fontFamily="@font/roboto_bold"
             android:letterSpacing="0"
             android:text="Login"
