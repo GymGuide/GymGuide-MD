@@ -1,4 +1,4 @@
-package com.example.gymguide
+package com.example.gymguide.ui
 
 object DataSource {
     var students = generateDummyStudents()

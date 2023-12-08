@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/welcome_background"
-    tools:context=".WelcomeActivity">
+    tools:context=".ui.WelcomeActivity">
 
     <TableLayout
         android:id="@+id/TableLayout01"
@@ -123,7 +123,7 @@ on how to perform it to help you on your transformation journey"
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="44dp"
         android:fontFamily="@font/roboto_medium"
         android:text="Become a coach"
         android:textColor="#FFFFFF"

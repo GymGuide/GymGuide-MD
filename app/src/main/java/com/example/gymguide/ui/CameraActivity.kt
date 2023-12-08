@@ -1,4 +1,4 @@
-    package com.example.gymguide
+    package com.example.gymguide.ui
 
     import android.Manifest
     import android.app.Activity
@@ -142,6 +142,7 @@
                         maxPos = i
                     }
                 }
+
                 val classes = arrayOf(
                     "abdominal-machine",
                     "arm-curl",
@@ -167,6 +168,7 @@
                     "squat-rack",
                     "torso-rotation-machine"
                 )
+
                 binding.tvResult.text = classes[maxPos]
 
                 // Releases model resources if no longer used.

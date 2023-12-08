@@ -1,10 +1,11 @@
-package com.example.gymguide
+package com.example.gymguide.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.gymguide.R
 
 class ExerciseAdapter(private val exercises: ArrayList<Exercise>) :
     RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {

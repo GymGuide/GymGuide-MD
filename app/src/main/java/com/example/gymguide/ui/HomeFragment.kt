@@ -1,4 +1,4 @@
-package com.example.gymguide
+package com.example.gymguide.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <FrameLayout
         android:id="@+id/frame_container"
@@ -19,13 +19,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/grey_navigation"
-        android:paddingHorizontal="6dp"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:fabAlignmentMode="center"
         app:fabCradleMargin="8dp"
         app:fabCradleRoundedCornerRadius="16dp"
-        app:fabCradleVerticalOffset="10dp"
+        app:fabCradleVerticalOffset="8dp"
         tools:ignore="VisualLintBottomAppBar">
 
         <LinearLayout
@@ -44,8 +43,8 @@
                 android:text="Home"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
-                app:drawableTopCompat="@drawable/ic_baseline_home_24"
-                app:drawableTint="@color/grey_menu" />
+                app:drawableTint="@color/grey_menu"
+                app:drawableTopCompat="@drawable/ic_baseline_home_24" />
 
             <TextView
                 android:id="@+id/wall_stats"
@@ -71,8 +70,8 @@
                 android:textAllCaps="false"
                 android:textColor="@color/grey_menu"
                 android:visibility="invisible"
-                app:drawableTopCompat="@drawable/ic_baseline_home_24"
-                app:drawableTint="@color/grey_menu" />
+                app:drawableTint="@color/grey_menu"
+                app:drawableTopCompat="@drawable/ic_baseline_home_24" />
 
             <TextView
                 android:id="@+id/wall_blur"
@@ -85,8 +84,8 @@
                 android:text="Consult"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
-                app:drawableTopCompat="@drawable/ic_baseline_people_24"
-                app:drawableTint="@color/grey_menu" />
+                app:drawableTint="@color/grey_menu"
+                app:drawableTopCompat="@drawable/ic_baseline_people_24" />
 
             <TextView
                 style="?android:attr/borderlessButtonStyle"
