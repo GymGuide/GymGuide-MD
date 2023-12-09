@@ -1,12 +1,16 @@
 package com.example.gymguide.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gymguide.data.ApiConfig
+import com.example.gymguide.data.ApiService
 import com.example.gymguide.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -15,6 +19,8 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val exerciseList = mutableListOf<Exercise>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,6 +32,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         // setup rv
         binding.rvExercise.setHasFixedSize(true)
@@ -39,6 +46,31 @@ class HomeFragment : Fragment() {
             }
         })
         binding.rvExercise.adapter = adapter
+        getExerciseList()
+    }
+
+    private fun getExerciseList() {
+        val retrofit = ApiConfig.getInstance()
+        val apiInterface = retrofit.create(ApiService::class.java)
+        lifecycleScope.launchWhenCreated {
+            try {
+                val response = apiInterface.getExercises()
+                if (response.isSuccessful) {
+                    //your code for handaling success response
+                    Log.d("Response",response.toString())
+
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        response.errorBody().toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }catch (e:Exception){
+                Log.e("Error",e.localizedMessage)
+            }
+        }
+
     }
 
     override fun onDestroyView() {

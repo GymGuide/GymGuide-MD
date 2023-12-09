@@ -5,6 +5,7 @@
     import android.content.Intent
     import android.content.pm.PackageManager
     import android.graphics.Bitmap
+    import android.graphics.ImageDecoder
     import android.media.ThumbnailUtils
     import android.net.Uri
     import android.os.Bundle
@@ -27,7 +28,7 @@
         private lateinit var binding: ActivityCameraBinding
         // ActivityResultLauncher for camera capture
         private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
-            private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+        private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             binding = ActivityCameraBinding.inflate(layoutInflater)
@@ -50,6 +51,19 @@
                     requestPermissions(arrayOf(Manifest.permission.CAMERA), 100)
                 }
             }
+            /**
+             * {@inheritDoc}
+             *
+             * @deprecated This method has been deprecated in favor of using the Activity Result API
+             * which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+             * contracts for common intents available in
+             * {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+             * testing, and allow receiving results in separate, testable classes independent from your
+             * activity. Use
+             * {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+             * passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+             */
+
 
             binding.galleryButton.setOnClickListener {
                 val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -66,8 +80,7 @@
                     val dimension = image!!.width.coerceAtMost(image.height)
                     image = ThumbnailUtils.extractThumbnail(image, dimension, dimension)
                     binding.imageView.setImageBitmap(image)
-                    // Resize the image before classification
-                    image = resizeImage(image!!, imageSize)
+                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
                     classifyImage(image)
                 }
             }
@@ -80,9 +93,13 @@
                     val dat: Uri = data.data!!
                     var image: Bitmap?
                     try {
-                        image = MediaStore.Images.Media.getBitmap(contentResolver, dat)
+                        val source = ImageDecoder.createSource(this.contentResolver, dat)
+                        image = ImageDecoder.decodeBitmap(source) { decoder, _, _ ->
+                            decoder.setTargetSampleSize(1) // shrinking by
+                            decoder.isMutableRequired = true // this resolve the hardware type of bitmap problem
+                        }
                         binding.imageView.setImageBitmap(image)
-                        image = Bitmap.createScaledBitmap(image!!, imageSize, imageSize, false)
+                        image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
                         classifyImage(image)
                     } catch (e: IOException) {
                         e.printStackTrace()
@@ -92,21 +109,6 @@
             }
         }
 
-        private fun resizeImage(image: Bitmap, targetSize: Int): Bitmap {
-            val aspectRatio: Float = image.width.toFloat() / image.height.toFloat()
-            val targetWidth: Int
-            val targetHeight: Int
-
-            if (image.width >= image.height) {
-                targetWidth = targetSize
-                targetHeight = (targetSize / aspectRatio).toInt()
-            } else {
-                targetWidth = (targetSize * aspectRatio).toInt()
-                targetHeight = targetSize
-            }
-
-            return Bitmap.createScaledBitmap(image, targetWidth, targetHeight, false)
-        }
         private fun classifyImage(image: Bitmap) {
             try {
                 val model: GymEquipmentV3 = GymEquipmentV3.newInstance(applicationContext)
