@@ -53,14 +53,4 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>
                 .into(ivExercise)
         }
     }
-
-    private var clickListener: ClickListener? = null
-    fun setClickListener(clickListener: ClickListener?) {
-        this.clickListener = clickListener
-    }
-
-    interface ClickListener {
-        fun onItemClicked(exercise: Exercise?)
-    }
-
 }

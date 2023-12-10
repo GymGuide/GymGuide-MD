@@ -37,10 +37,10 @@ data class Exercise(
 )
 
 // Status class remains the same
-data class Status(
-	@SerializedName("code")
-	val code: Int,
-
-	@SerializedName("message")
-	val message: String
-)
+//data class Status(
+//	@SerializedName("code")
+//	val code: Int,
+//
+//	@SerializedName("message")
+//	val message: String
+//)

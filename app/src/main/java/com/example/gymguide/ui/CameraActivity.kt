@@ -2,6 +2,7 @@ package com.example.gymguide.ui
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -10,6 +11,7 @@ import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -47,40 +49,25 @@ class CameraActivity : AppCompatActivity() {
 
         binding.cameraButton.setOnClickListener {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                // Start the activity using the launcher
-                cameraLauncher.launch(cameraIntent)
+                showPickImageDialog()
             } else {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), 100)
             }
         }
-        /**
-         * {@inheritDoc}
-         *
-         * @deprecated This method has been deprecated in favor of using the Activity Result API
-         * which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
-         * contracts for common intents available in
-         * {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
-         * testing, and allow receiving results in separate, testable classes independent from your
-         * activity. Use
-         * {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
-         * passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
-         */
-
 
         binding.galleryButton.setOnClickListener {
-            val galleryIntent =
-                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            // Start the activity using the launcher
-            galleryLauncher.launch(galleryIntent)
+            showPickImageDialog()
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun onCameraActivityResult(result: androidx.activity.result.ActivityResult) {
         if (result.resultCode == RESULT_OK) {
             val data: Intent? = result.data
             if (data != null && data.hasExtra("data")) {
-                var image = data.extras?.get("data") as Bitmap?
+                //Non-deprecated method require API 33 (Tiramisu)
+                //Use the type-safer getParcelableExtra(String, Class) starting from Android Build.VERSION_CODES.TIRAMISU.
+                var image = data.getParcelableExtra<Bitmap>("data")
                 val dimension = image!!.width.coerceAtMost(image.height)
                 image = ThumbnailUtils.extractThumbnail(image, dimension, dimension)
                 binding.imageView.setImageBitmap(image)
@@ -112,6 +99,38 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showPickImageDialog() {
+        val builderSingle = AlertDialog.Builder(this) // Use 'this' instead of 'MainActivity.this'
+        builderSingle.setTitle("Select One Option")
+        val arrayAdapter = ArrayAdapter<String>(
+            this,  // Use 'this' instead of 'MainActivity.this'
+            android.R.layout.select_dialog_singlechoice
+        ) // Use the correct layout resource ID
+        arrayAdapter.add("Camera")
+        arrayAdapter.add("Gallery")
+        builderSingle.setNegativeButton(
+            "cancel"
+        ) { dialog, _ -> dialog.dismiss() }
+        builderSingle.setAdapter(
+            arrayAdapter
+        ) { _, which ->
+            when (which) {
+                0 -> {
+                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    cameraLauncher.launch(cameraIntent)
+                }
+
+                1 -> {
+                    val galleryIntent =
+                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    // Start the activity using the launcher
+                    galleryLauncher.launch(galleryIntent)
+                }
+            }
+        }
+        builderSingle.show()
     }
 
     private fun classifyImage(image: Bitmap) {
