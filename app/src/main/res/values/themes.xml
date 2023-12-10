@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.GymGuide" parent="Base.Theme.GymGuide" />
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 </resources>

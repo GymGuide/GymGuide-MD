@@ -3,46 +3,44 @@ package com.example.gymguide.data
 import com.google.gson.annotations.SerializedName
 
 data class ResponseList(
-
-	@field:SerializedName("data")
-	val data: List<DataItem?>? = null,
-
-	@field:SerializedName("status")
-	val status: Status? = null
+	@SerializedName("data")
+	val data: List<Exercise>
 )
 
-data class DataItem(
+data class Exercise(
+	@SerializedName("id")
+	val id: Int,
 
-	@field:SerializedName("difficulty")
-	val difficulty: String? = null,
+	@SerializedName("name")
+	val name: String,
 
-	@field:SerializedName("instructions")
-	val instructions: String? = null,
+	@SerializedName("type")
+	val type: String,
 
-	@field:SerializedName("muscle")
-	val muscle: String? = null,
+	@SerializedName("muscle")
+	val muscle: String,
 
-	@field:SerializedName("name")
-	val name: String? = null,
+	@SerializedName("equipment")
+	val equipment: String,
 
-	@field:SerializedName("link")
-	val link: String? = null,
+	@SerializedName("difficulty")
+	val difficulty: String,
 
-	@field:SerializedName("equipment")
-	val equipment: String? = null,
+	@SerializedName("instructions")
+	val instructions: String,
 
-	@field:SerializedName("type")
-	val type: String? = null,
+	@SerializedName("link")
+	val link: String,
 
-	@field:SerializedName("picture")
-	val picture: String? = null
+	@SerializedName("picture")
+	val picture: String
 )
 
+// Status class remains the same
 data class Status(
+	@SerializedName("code")
+	val code: Int,
 
-	@field:SerializedName("code")
-	val code: Int? = null,
-
-	@field:SerializedName("message")
-	val message: String? = null
+	@SerializedName("message")
+	val message: String
 )

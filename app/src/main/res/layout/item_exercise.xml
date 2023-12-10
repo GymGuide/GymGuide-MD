@@ -7,13 +7,14 @@
 
     <ImageView
         android:id="@+id/iv_exercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/sample_exercise" />
+        android:src="@drawable/sample_exercise"
+        app:shapeAppearanceOverlay="@style/roundedImageView"
+        android:layout_width="220dp"
+        android:layout_height="140dp" />
 
     <TextView
         android:id="@+id/tv_exercise_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:fontFamily="@font/roboto_medium"
