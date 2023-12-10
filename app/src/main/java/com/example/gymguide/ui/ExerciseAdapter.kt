@@ -10,7 +10,8 @@ import com.example.gymguide.data.Exercise
 import com.example.gymguide.databinding.ItemExerciseBinding
 
 class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
-    inner class ExerciseViewHolder(val binding: ItemExerciseBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ExerciseViewHolder(val binding: ItemExerciseBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Exercise>() {
         override fun areItemsTheSame(oldItem: Exercise, newItem: Exercise): Boolean {
@@ -25,21 +26,20 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>
     private val differ = AsyncListDiffer(this, diffCallback)
     var exercises: List<Exercise>
         get() = differ.currentList
-        set(value) { differ.submitList(value) }
+        set(value) {
+            differ.submitList(value)
+        }
 
     override fun getItemCount() = exercises.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
-        return ExerciseViewHolder(ItemExerciseBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        ))
-    }
-
-    private var clickListener: ClickListener? = null
-    fun setClickListener(clickListener: ClickListener?) {
-        this.clickListener = clickListener
+        return ExerciseViewHolder(
+            ItemExerciseBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
@@ -50,8 +50,13 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>
             Glide.with(root.context)
                 .load(exercise.picture)
                 .centerCrop()
-                .into(ivExercise);
+                .into(ivExercise)
         }
+    }
+
+    private var clickListener: ClickListener? = null
+    fun setClickListener(clickListener: ClickListener?) {
+        this.clickListener = clickListener
     }
 
     interface ClickListener {

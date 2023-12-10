@@ -14,9 +14,11 @@ import retrofit2.HttpException
 import java.io.IOException
 
 const val TAG = "HomeFragment"
+
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -63,7 +65,7 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() = binding.rvExercise.apply {
         exerciseAdapter = ExerciseAdapter()
         adapter = exerciseAdapter
-        layoutManager = LinearLayoutManager(context,  LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
     //private fun getExerciseList() {
