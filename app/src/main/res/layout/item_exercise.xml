@@ -26,6 +26,8 @@
         android:id="@+id/tv_exercise_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="2"
         android:fontFamily="@font/poppins_light"
         android:text="weekly zumba schedule for female \nin sultan gym during ramadhan"
         android:textColor="@color/white"

@@ -2,25 +2,27 @@ package com.example.gymguide.ui
 
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gymguide.R
 import com.example.gymguide.data.RetrofitInstance
+import com.example.gymguide.databinding.FragmentConsultBinding
 import com.example.gymguide.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-const val TAG = "HomeFragment"
+const val TAG = "ConsultFragment"
 
-class HomeFragment : Fragment() {
+class ConsultFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentConsultBinding? = null
 
     private val binding get() = _binding!!
     private lateinit var exerciseAdapter: ExerciseAdapter
@@ -28,7 +30,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentConsultBinding.inflate(inflater, container, false)
         return binding.root
     }
 

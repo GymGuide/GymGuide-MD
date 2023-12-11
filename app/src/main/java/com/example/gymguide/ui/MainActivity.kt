@@ -26,6 +26,18 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
+        binding.discoverButton.setOnClickListener {
+            val homeFragment = HomeFragment()
+            fragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.frame_container, homeFragment,
+                    HomeFragment::class.java.simpleName
+                )
+                .addToBackStack(null)
+                .commit()
+        }
+
         binding.fab.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
