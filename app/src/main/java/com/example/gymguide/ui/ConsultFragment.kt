@@ -31,7 +31,7 @@ class ConsultFragment : Fragment() {
 
         viewPager.adapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
-                return CardFragment.create(Card.DECK[position])
+                return CardView()
             }
 
             override fun getItemCount(): Int {
@@ -44,23 +44,8 @@ class ConsultFragment : Fragment() {
         }.attach()
     }
 
-    class CardFragment : Fragment() {
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View {
-            val cardView = CardView(layoutInflater, container)
-            cardView.bind(Card.fromBundle(requireArguments()))
-            return cardView.view
-        }
-
-        companion object {
-            fun create(card: Card): CardFragment {
-                val fragment = CardFragment()
-                fragment.arguments = card.toBundle()
-                return fragment
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

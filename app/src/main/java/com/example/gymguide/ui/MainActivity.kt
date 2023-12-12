@@ -1,57 +1,58 @@
 package com.example.gymguide.ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gymguide.R
 import com.example.gymguide.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        val fragmentManager = supportFragmentManager
-        //val homeFragment = HomeFragment()
-        //val fragment = fragmentManager.findFragmentByTag(HomeFragment::class.java.simpleName)
-        //if (fragment !is HomeFragment) {
-        //    Log.d("MyFlexibleFragment", "Fragment Name :" + HomeFragment::class.java.simpleName)
-        //    fragmentManager
-        //        .beginTransaction()
-        //        .add(R.id.frame_container, homeFragment, HomeFragment::class.java.simpleName)
-        //        .commit()
-        //}
+        if (savedInstanceState == null) {
+            showHomeFragment()
+        }
 
         binding.consultButton.setOnClickListener {
-            val consultFragment = ConsultFragment()
-            fragmentManager
-                .beginTransaction()
-                .replace(
-                    R.id.frame_container, consultFragment,
-                    ConsultFragment::class.java.simpleName
-                )
-                .addToBackStack(null)
-                .commit()
+            showConsultFragment()
         }
 
         binding.homeButton.setOnClickListener {
-            val homeFragment = HomeFragment()
-            fragmentManager
-                .beginTransaction()
-                .replace(
-                    R.id.frame_container, homeFragment,
-                    HomeFragment::class.java.simpleName
-                )
-                .addToBackStack(null)
-                .commit()
+            showHomeFragment()
         }
 
         binding.fab.setOnClickListener {
-            val intent = Intent(this, CameraActivity::class.java)
-            startActivity(intent)
+            showScanFragment()
         }
+
+        //binding.fab.setOnClickListener {
+        //    startActivity(Intent(this, CameraActivity::class.java))
+        //}
+    }
+
+    private fun showHomeFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_container, HomeFragment(), HomeFragment::class.java.simpleName)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun showConsultFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_container, ConsultFragment(), ConsultFragment::class.java.simpleName)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun showScanFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_container, ScanFragment(), ScanFragment::class.java.simpleName)
+            .addToBackStack(null)
+            .commit()
     }
 }

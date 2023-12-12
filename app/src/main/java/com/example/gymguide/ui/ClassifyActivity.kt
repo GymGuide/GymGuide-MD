@@ -25,7 +25,7 @@ import java.nio.ByteOrder
 
 
 /** Activity that displays the camera and performs object detection on the incoming frames */
-class CameraActivity : AppCompatActivity() {
+class ClassifyActivity : AppCompatActivity() {
     private var imageSize = 150
     private lateinit var binding: ActivityCameraBinding
 

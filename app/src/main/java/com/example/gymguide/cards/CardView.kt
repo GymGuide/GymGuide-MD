@@ -1,90 +1,75 @@
-/*
- * Copyright 2018 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.gymguide.cards
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.annotation.ColorRes
-import com.example.gymguide.R
-import com.example.gymguide.cards.Card
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gymguide.data.RetrofitInstance
+import com.example.gymguide.databinding.FragmentHomeBinding
+import com.example.gymguide.ui.ExerciseAdapter
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
-/** Inflates and populates a [View] representing a [Card]  */
-class CardView(layoutInflater: LayoutInflater, container: ViewGroup?) {
-    val view: View = layoutInflater.inflate(R.layout.item_card_layout, container, false)
-    private val textSuite: TextView
-    private val textCorner1: TextView
-    private val textCorner2: TextView
+class CardView : Fragment() {
 
-    init {
-        textSuite = view.findViewById(R.id.label_center)
-        textCorner1 = view.findViewById(R.id.label_top)
-        textCorner2 = view.findViewById(R.id.label_bottom)
+    private var _binding: FragmentHomeBinding? = null
+
+    private val binding get() = _binding!!
+    private lateinit var exerciseAdapter: ExerciseAdapter
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    /**
-     * Updates the view to represent the passed in card
-     */
-    fun bind(card: Card) {
-        textSuite.text = card.suit
-        view.setBackgroundResource(getColorRes(card))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val cornerLabel = card.cornerLabel
-        textCorner1.text = cornerLabel
-        textCorner2.text = cornerLabel
-    }
+        setupRecyclerView()
 
-    @ColorRes
-    private fun getColorRes(card: Card): Int {
-        val shade = getShade(card)
-        val color = getColor(card)
-        return COLOR_MAP[color][shade]
-    }
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                try {
+                    val response = RetrofitInstance.api.getExercises()
 
-    private fun getShade(card: Card): Int {
-        when (card.value) {
-            "2", "6", "10", "A" -> return 2
-            "3", "7", "J" -> return 3
-            "4", "8", "Q" -> return 0
-            "5", "9", "K" -> return 1
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            exerciseAdapter.exercises = body.data
+                        } else {
+                            Log.e("HomeFragment", "Response body is null")
+                        }
+                    } else {
+                        Log.e("HomeFragment", "Response not successful: ${response.code()}")
+                    }
+                } catch (e: IOException) {
+                    Log.e("HomeFragment", "IOException, you might not have internet connection")
+                } catch (e: HttpException) {
+                    Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
+                } finally {
+                    //binding.progressBar.isVisible = false
+                }
+            }
         }
-        throw IllegalStateException("Card value cannot be $card.value")
     }
 
-    private fun getColor(card: Card): Int {
-        when (card.suit) {
-            "♣" -> return 0
-            "♦" -> return 1
-            "♥" -> return 2
-            "♠" -> return 3
-        }
-        throw IllegalStateException("Card suit cannot be $card.suit")
+    private fun setupRecyclerView() = binding.rvExercise.apply {
+        exerciseAdapter = ExerciseAdapter()
+        adapter = exerciseAdapter
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    companion object {
-        private val COLOR_MAP = arrayOf(
-            intArrayOf(R.color.red_100, R.color.red_300, R.color.red_500, R.color.red_700),
-            intArrayOf(R.color.blue_100, R.color.blue_300, R.color.blue_500, R.color.blue_700),
-            intArrayOf(
-                R.color.green_100, R.color.green_300, R.color.green_500,
-                R.color.green_700),
-            intArrayOf(
-                R.color.yellow_100, R.color.yellow_300, R.color.yellow_500,
-                R.color.yellow_700))
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

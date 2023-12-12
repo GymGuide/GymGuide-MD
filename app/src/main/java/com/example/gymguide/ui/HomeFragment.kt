@@ -16,8 +16,6 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-const val TAG = "HomeFragment"
-
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -47,15 +45,15 @@ class HomeFragment : Fragment() {
                         if (body != null) {
                             exerciseAdapter.exercises = body.data
                         } else {
-                            Log.e(TAG, "Response body is null")
+                            Log.e("HomeFragment", "Response body is null")
                         }
                     } else {
-                        Log.e(TAG, "Response not successful: ${response.code()}")
+                        Log.e("HomeFragment", "Response not successful: ${response.code()}")
                     }
                 } catch (e: IOException) {
-                    Log.e(TAG, "IOException, you might not have internet connection")
+                    Log.e("HomeFragment", "IOException, you might not have internet connection")
                 } catch (e: HttpException) {
-                    Log.e(TAG, "HttpException, unexpected response: ${e.code()}")
+                    Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
                 } finally {
                     //binding.progressBar.isVisible = false
                 }
