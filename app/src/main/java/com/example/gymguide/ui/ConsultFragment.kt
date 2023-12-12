@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.gymguide.cards.CardView
-import com.example.gymguide.cards.ExerciseCategory
+import com.example.gymguide.trainer.TrainerView
+import com.example.gymguide.trainer.TrainerCategory
 import com.example.gymguide.databinding.FragmentConsultBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -31,16 +31,16 @@ class ConsultFragment : Fragment() {
 
         viewPager.adapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
-                return CardView()
+                return TrainerView()
             }
 
             override fun getItemCount(): Int {
-                return ExerciseCategory.CATEGORIES.size
+                return TrainerCategory.CATEGORIES.size
             }
         }
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = ExerciseCategory.CATEGORIES[position]
+            tab.text = TrainerCategory.CATEGORIES[position]
         }.attach()
     }
 

@@ -1,4 +1,4 @@
-package com.example.gymguide.cards
+package com.example.gymguide.trainer
 
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class CardView : Fragment() {
+class TrainerView : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 

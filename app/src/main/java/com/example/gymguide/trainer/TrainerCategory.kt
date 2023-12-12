@@ -1,13 +1,13 @@
-package com.example.gymguide.cards
+package com.example.gymguide.trainer
 
 import android.os.Bundle
 
 /**
  * Category item representing different exercise categories
  */
-class ExerciseCategory private constructor(val category: String) {
+class TrainerCategory private constructor(val category: String) {
 
-    /** Use in conjunction with [ExerciseCategory.fromBundle]  */
+    /** Use in conjunction with [TrainerCategory.fromBundle]  */
     fun toBundle(): Bundle {
         val args = Bundle(1)
         args.putString(ARGS_BUNDLE, category)
@@ -19,14 +19,14 @@ class ExerciseCategory private constructor(val category: String) {
     }
 
     companion object {
-        internal val ARGS_BUNDLE = ExerciseCategory::class.java.name + ":Bundle"
+        internal val ARGS_BUNDLE = TrainerCategory::class.java.name + ":Bundle"
 
         val CATEGORIES = listOf("General", "Cardio", "Strength", "Yoga", "Lifestyle")
 
-        /** Use in conjunction with [ExerciseCategory.toBundle]  */
-        fun fromBundle(bundle: Bundle): ExerciseCategory {
+        /** Use in conjunction with [TrainerCategory.toBundle]  */
+        fun fromBundle(bundle: Bundle): TrainerCategory {
             val category = bundle.getString(ARGS_BUNDLE)
-            return ExerciseCategory(category!!)
+            return TrainerCategory(category!!)
         }
     }
 }
