@@ -8,9 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.gymguide.data.Exercise
 import com.example.gymguide.databinding.ItemExerciseBinding
+import com.example.gymguide.databinding.ItemExerciseRecommendationBinding
 
-class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
+class ExerciseAdapter(private val layoutType: Int) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val viewTypeOld = 1
+    private val viewTypeNew = 2
+
     inner class ExerciseViewHolder(val binding: ItemExerciseBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    inner class ExerciseViewHolderNew(val binding: ItemExerciseRecommendationBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Exercise>() {
@@ -32,25 +41,60 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>
 
     override fun getItemCount() = exercises.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
-        return ExerciseViewHolder(
-            ItemExerciseBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            viewTypeOld -> {
+                val binding = ItemExerciseBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                ExerciseViewHolder(binding)
+            }
+
+            viewTypeNew -> {
+                val bindingNew = ItemExerciseRecommendationBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                ExerciseViewHolderNew(bindingNew)
+            }
+
+            else -> throw IllegalArgumentException("Invalid view type: $viewType")
+        }
     }
 
-    override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
-        holder.binding.apply {
-            val exercise = exercises[position]
-            tvExerciseName.text = exercise.name
-            tvExerciseDesc.text = exercise.instructions
-            Glide.with(root.context)
-                .load(exercise.picture)
-                .centerCrop()
-                .into(ivExercise)
+    override fun getItemViewType(position: Int): Int {
+        return layoutType
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ExerciseViewHolder -> {
+                val exercise = exercises[position]
+                holder.binding.apply {
+                    tvExerciseName.text = exercise.name
+                    tvExerciseDesc.text = exercise.instructions
+                    Glide.with(root.context)
+                        .load(exercise.picture)
+                        .centerCrop()
+                        .into(ivExercise)
+                }
+            }
+
+            is ExerciseViewHolderNew -> {
+                val exercise = exercises[position]
+                holder.binding.apply {
+                    tvExerciseName.text = exercise.name
+                    tvExerciseDesc.text = exercise.instructions
+                    Glide.with(root.context)
+                        .load(exercise.picture)
+                        .centerCrop()
+                        .into(ivExercise)
+                }
+            }
         }
     }
 }
+

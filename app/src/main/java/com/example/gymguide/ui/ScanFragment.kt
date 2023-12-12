@@ -1,9 +1,9 @@
 package com.example.gymguide.ui
 
-import android.R
-import android.app.Activity
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.media.ThumbnailUtils
@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.gymguide.databinding.FragmentScanBinding
 import java.io.IOException
@@ -60,7 +61,7 @@ class ScanFragment : Fragment() {
         builderSingle.setTitle("Select One Option")
         val arrayAdapter = ArrayAdapter<String>(
             requireContext(),  // Use 'this' instead of 'MainActivity.this'
-            R.layout.select_dialog_singlechoice
+            android.R.layout.select_dialog_singlechoice
         ) // Use the correct layout resource ID
         arrayAdapter.add("Camera")
         arrayAdapter.add("Gallery")
@@ -72,8 +73,20 @@ class ScanFragment : Fragment() {
         ) { _, which ->
             when (which) {
                 0 -> {
-                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    cameraLauncher.launch(cameraIntent)
+                    if (ActivityCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.CAMERA
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        cameraLauncher.launch(cameraIntent)
+                    } else {
+                        ActivityCompat.requestPermissions(
+                            requireActivity(),
+                            arrayOf(Manifest.permission.CAMERA),
+                            100
+                        )
+                    }
                 }
 
                 1 -> {
@@ -97,6 +110,10 @@ class ScanFragment : Fragment() {
                 var image = data.getParcelableExtra<Bitmap>("data")
                 val dimension = image!!.width.coerceAtMost(image.height)
                 image = ThumbnailUtils.extractThumbnail(image, dimension, dimension)
+                val intent = Intent(requireContext(), ClassifyEquipActivity::class.java)
+                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
+                intent.putExtra("image",image)
+                startActivity(intent)
                 //binding.imageView.setImageBitmap(image)
                 //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
                 //classifyImage(image)
@@ -105,7 +122,7 @@ class ScanFragment : Fragment() {
     }
 
     private fun onGalleryActivityResult(result: androidx.activity.result.ActivityResult) {
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == AppCompatActivity.RESULT_OK) {
             val data: Intent? = result.data
             if (data != null && data.data != null) {
                 val dat: Uri = data.data!!
@@ -115,8 +132,12 @@ class ScanFragment : Fragment() {
                     image = ImageDecoder.decodeBitmap(source) { decoder, _, _ ->
                         decoder.setTargetSampleSize(1) // shrinking by
                         decoder.isMutableRequired =
-                            true // this resolve the hardware type of bitmap problem
+                            true // this resolves the hardware type of bitmap problem
                     }
+                    val intent = Intent(requireContext(), ClassifyEquipActivity::class.java)
+                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
+                    intent.putExtra("image", image)
+                    startActivity(intent)
                     //binding.imageView.setImageBitmap(image)
                     //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
                     //classifyImage(image)
@@ -127,6 +148,7 @@ class ScanFragment : Fragment() {
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

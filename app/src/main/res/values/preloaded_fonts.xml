@@ -2,6 +2,8 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/bebas_neue</item>
+        <item>@font/inter_bold</item>
+        <item>@font/inter_medium</item>
         <item>@font/poppins_light</item>
         <item>@font/roboto</item>
         <item>@font/roboto_black</item>

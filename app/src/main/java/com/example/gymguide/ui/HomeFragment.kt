@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() = binding.rvExercise.apply {
-        exerciseAdapter = ExerciseAdapter()
+        exerciseAdapter = ExerciseAdapter(1)
         adapter = exerciseAdapter
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
