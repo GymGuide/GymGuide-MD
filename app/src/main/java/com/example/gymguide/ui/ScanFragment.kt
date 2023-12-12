@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -86,6 +87,7 @@ class ScanFragment : Fragment() {
                             arrayOf(Manifest.permission.CAMERA),
                             100
                         )
+                        Toast.makeText(context, "Permission denied, please enable it via settings", Toast.LENGTH_SHORT).show()
                     }
                 }
 
