@@ -41,9 +41,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:tabIndicatorFullWidth="true"
-        app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/yellow_menu"
         app:tabTextColor="@color/white" />
+
 
     <androidx.viewpager2.widget.ViewPager2
         android:layout_weight="1"
