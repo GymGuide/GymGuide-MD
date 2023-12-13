@@ -9,17 +9,23 @@ import com.bumptech.glide.Glide
 import com.example.gymguide.data.Exercise
 import com.example.gymguide.databinding.ItemExerciseBinding
 import com.example.gymguide.databinding.ItemExerciseRecommendationBinding
+import com.example.gymguide.databinding.ItemTrainerBinding
 
 class ExerciseAdapter(private val layoutType: Int) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val viewTypeOld = 1
     private val viewTypeNew = 2
+    private val viewTypeNew1 = 3
+
 
     inner class ExerciseViewHolder(val binding: ItemExerciseBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     inner class ExerciseViewHolderNew(val binding: ItemExerciseRecommendationBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    inner class ExerciseViewHolderNew1(val binding: ItemTrainerBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Exercise>() {
@@ -61,6 +67,15 @@ class ExerciseAdapter(private val layoutType: Int) :
                 ExerciseViewHolderNew(bindingNew)
             }
 
+            viewTypeNew1 -> {
+                val bindingNew1 = ItemTrainerBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                ExerciseViewHolderNew1(bindingNew1)
+            }
+
             else -> throw IllegalArgumentException("Invalid view type: $viewType")
         }
     }
@@ -84,6 +99,18 @@ class ExerciseAdapter(private val layoutType: Int) :
             }
 
             is ExerciseViewHolderNew -> {
+                val exercise = exercises[position]
+                holder.binding.apply {
+                    tvExerciseName.text = exercise.name
+                    tvExerciseDesc.text = exercise.instructions
+                    Glide.with(root.context)
+                        .load(exercise.picture)
+                        .centerCrop()
+                        .into(ivExercise)
+                }
+            }
+
+            is ExerciseViewHolderNew1 -> {
                 val exercise = exercises[position]
                 holder.binding.apply {
                     tvExerciseName.text = exercise.name

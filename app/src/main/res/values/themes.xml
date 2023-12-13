@@ -6,12 +6,17 @@
     </style>
 
     <style name="Theme.GymGuide" parent="Base.Theme.GymGuide" />
-    <style name="roundedImageView" parent="">
+    <style name="roundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
 
     <style name="fab_rounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="circularImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>

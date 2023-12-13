@@ -1,4 +1,4 @@
-package com.example.gymguide.trainer
+package com.example.gymguide.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -12,12 +12,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gymguide.data.RetrofitInstance
 import com.example.gymguide.databinding.FragmentTrainerBinding
-import com.example.gymguide.ui.ExerciseAdapter
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class TrainerView : Fragment() {
+class FragmentTrainer : Fragment() {
 
     private var _binding: FragmentTrainerBinding? = null
 
