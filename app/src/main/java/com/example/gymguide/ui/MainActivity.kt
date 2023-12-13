@@ -25,19 +25,25 @@ class MainActivity : AppCompatActivity() {
             showHomeFragment()
         }
 
-        binding.consultButton.setOnClickListener {
-            selectButton(binding.consultButton)
-            showConsultFragment()
-        }
-
         binding.homeButton.setOnClickListener {
             selectButton(binding.homeButton)
             showHomeFragment()
         }
 
+        binding.discoverButton.setOnClickListener {
+            selectButton(binding.discoverButton)
+            showDiscoverFragment()
+        }
+
+        binding.consultButton.setOnClickListener {
+            selectButton(binding.consultButton)
+            showConsultFragment()
+        }
+
         binding.fab.setOnClickListener {
             showScanFragment()
         }
+
     }
 
     private fun selectButton(textview: TextView) {
@@ -77,21 +83,24 @@ class MainActivity : AppCompatActivity() {
     private fun showHomeFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_container, HomeFragment(), HomeFragment::class.java.simpleName)
-            .addToBackStack(null)
             .commit()
     }
 
     private fun showConsultFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_container, ConsultFragment(), ConsultFragment::class.java.simpleName)
-            .addToBackStack(null)
             .commit()
     }
 
     private fun showScanFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_container, ScanFragment(), ScanFragment::class.java.simpleName)
-            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun showDiscoverFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_container, DiscoverFragment(), DiscoverFragment::class.java.simpleName)
             .commit()
     }
 }
