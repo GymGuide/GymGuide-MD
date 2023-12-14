@@ -115,7 +115,7 @@ class ExerciseAdapter(private val layoutType: Int) :
                         .centerCrop()
                         .into(ivExercise)
                 }
-                //holder.itemView.setOnClickListener { clickListener!!.onItemClicked(exercise) }
+                holder.itemView.setOnClickListener { clickListener!!.onItemClicked(exercise) }
 
 
             }

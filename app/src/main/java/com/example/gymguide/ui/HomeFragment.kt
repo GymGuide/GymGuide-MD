@@ -1,11 +1,11 @@
 package com.example.gymguide.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -68,7 +68,17 @@ class HomeFragment : Fragment() {
         exerciseAdapter = ExerciseAdapter(1)
         exerciseAdapter.setClickListener(object : ExerciseAdapter.ClickListener {
             override fun onItemClicked(exercise: Exercise) {
-                Toast.makeText(context, exercise.name, Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), DetailExerciseActivity::class.java)
+                intent.putExtra("id",exercise.id)
+                intent.putExtra("name",exercise.name)
+                intent.putExtra("type",exercise.type)
+                intent.putExtra("muscle",exercise.muscle)
+                intent.putExtra("equipment",exercise.equipment)
+                intent.putExtra("difficulty",exercise.difficulty)
+                intent.putExtra("instructions",exercise.instructions)
+                intent.putExtra("link",exercise.link)
+                intent.putExtra("picture",exercise.picture)
+                startActivity(intent)
             }
         })
         adapter = exerciseAdapter

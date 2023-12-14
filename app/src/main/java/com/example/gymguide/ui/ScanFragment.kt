@@ -109,12 +109,12 @@ class ScanFragment : Fragment() {
             if (data != null && data.hasExtra("data")) {
                 //Non-deprecated method require API 33 (Tiramisu)
                 //Use the type-safer getParcelableExtra(String, Class) starting from Android Build.VERSION_CODES.TIRAMISU.
-                var image = data.getParcelableExtra<Bitmap>("data")
-                val dimension = image!!.width.coerceAtMost(image.height)
-                image = ThumbnailUtils.extractThumbnail(image, dimension, dimension)
+                var picture = data.getParcelableExtra<Bitmap>("data")
+                val dimension = picture!!.width.coerceAtMost(picture.height)
+                picture = ThumbnailUtils.extractThumbnail(picture, dimension, dimension)
                 val intent = Intent(requireContext(), ClassifyEquipActivity::class.java)
-                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
-                intent.putExtra("image",image)
+                picture = Bitmap.createScaledBitmap(picture, imageSize, imageSize, false)
+                intent.putExtra("picture",picture)
                 startActivity(intent)
                 //binding.imageView.setImageBitmap(image)
                 //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
@@ -128,17 +128,17 @@ class ScanFragment : Fragment() {
             val data: Intent? = result.data
             if (data != null && data.data != null) {
                 val dat: Uri = data.data!!
-                var image: Bitmap?
+                var picture: Bitmap?
                 try {
                     val source = ImageDecoder.createSource(requireContext().contentResolver, dat)
-                    image = ImageDecoder.decodeBitmap(source) { decoder, _, _ ->
+                    picture = ImageDecoder.decodeBitmap(source) { decoder, _, _ ->
                         decoder.setTargetSampleSize(1) // shrinking by
                         decoder.isMutableRequired =
                             true // this resolves the hardware type of bitmap problem
                     }
                     val intent = Intent(requireContext(), ClassifyEquipActivity::class.java)
-                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
-                    intent.putExtra("image", image)
+                    picture = Bitmap.createScaledBitmap(picture, imageSize, imageSize, false)
+                    intent.putExtra("picture", picture)
                     startActivity(intent)
                     //binding.imageView.setImageBitmap(image)
                     //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)

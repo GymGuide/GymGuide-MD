@@ -1,5 +1,6 @@
 package com.example.gymguide.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.gymguide.data.Exercise
 import com.example.gymguide.data.RetrofitInstance
 import com.example.gymguide.databinding.ActivityClassifyEquipBinding
 import com.example.gymguide.ml.GymEquipmentV3
@@ -32,17 +34,17 @@ class ClassifyEquipActivity : AppCompatActivity() {
         binding = ActivityClassifyEquipBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val extras = intent.extras
-        var image: Bitmap? = extras?.getParcelable("image")
+        var picture: Bitmap? = extras?.getParcelable("picture")
 
-        if (image != null) {
+        if (picture != null) {
             // Now 'image' contains the Bitmap extra named "image"
             // You can use 'image' as needed in your activity
             Glide.with(this)
-                .load(image)
+                .load(picture)
                 .centerCrop()
                 .into(binding.ivClassifiedImage)
-            image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
-            classifyImage(image)
+            picture = Bitmap.createScaledBitmap(picture, imageSize, imageSize, false)
+            classifyImage(picture)
         }
 
         setupRecyclerView()
@@ -75,6 +77,21 @@ class ClassifyEquipActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() = binding.rvExercise.apply {
         exerciseAdapter = ExerciseAdapter(2)
+        exerciseAdapter.setClickListener(object : ExerciseAdapter.ClickListener {
+            override fun onItemClicked(exercise: Exercise) {
+                val intent = Intent(context, DetailExerciseActivity::class.java)
+                intent.putExtra("id",exercise.id)
+                intent.putExtra("name",exercise.name)
+                intent.putExtra("type",exercise.type)
+                intent.putExtra("muscle",exercise.muscle)
+                intent.putExtra("equipment",exercise.equipment)
+                intent.putExtra("difficulty",exercise.difficulty)
+                intent.putExtra("instructions",exercise.instructions)
+                intent.putExtra("link",exercise.link)
+                intent.putExtra("picture",exercise.picture)
+                startActivity(intent)
+            }
+        })
         adapter = exerciseAdapter
         layoutManager = LinearLayoutManager(context)
     }
