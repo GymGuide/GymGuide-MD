@@ -11,9 +11,11 @@ import com.example.gymguide.databinding.ItemExerciseBinding
 import com.example.gymguide.databinding.ItemExerciseRecommendationBinding
 import com.example.gymguide.databinding.ItemTrainerBinding
 
+
 class ExerciseAdapter(private val layoutType: Int) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var clickListener: ClickListener? = null
     private val viewTypeOld = 1
     private val viewTypeNew = 2
     private val viewTypeNew1 = 3
@@ -46,6 +48,10 @@ class ExerciseAdapter(private val layoutType: Int) :
         }
 
     override fun getItemCount() = exercises.size
+
+    fun setClickListener(clickListener: ClickListener?) {
+        this.clickListener = clickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -96,6 +102,7 @@ class ExerciseAdapter(private val layoutType: Int) :
                         .centerCrop()
                         .into(ivExercise)
                 }
+                holder.itemView.setOnClickListener { clickListener!!.onItemClicked(exercise) }
             }
 
             is ExerciseViewHolderNew -> {
@@ -108,6 +115,9 @@ class ExerciseAdapter(private val layoutType: Int) :
                         .centerCrop()
                         .into(ivExercise)
                 }
+                //holder.itemView.setOnClickListener { clickListener!!.onItemClicked(exercise) }
+
+
             }
 
             is ExerciseViewHolderNew1 -> {
@@ -120,8 +130,13 @@ class ExerciseAdapter(private val layoutType: Int) :
                         .centerCrop()
                         .into(ivExercise)
                 }
+                //holder.itemView.setOnClickListener { clickListener!!.onItemClicked(exercise) }
             }
+
         }
+    }
+    interface ClickListener {
+        fun onItemClicked(exercise: Exercise)
     }
 }
 

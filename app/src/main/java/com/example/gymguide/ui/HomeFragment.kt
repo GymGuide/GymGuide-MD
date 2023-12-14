@@ -5,16 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gymguide.data.Exercise
 import com.example.gymguide.data.RetrofitInstance
 import com.example.gymguide.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+
 
 class HomeFragment : Fragment() {
 
@@ -63,7 +66,13 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() = binding.rvExercise.apply {
         exerciseAdapter = ExerciseAdapter(1)
+        exerciseAdapter.setClickListener(object : ExerciseAdapter.ClickListener {
+            override fun onItemClicked(exercise: Exercise) {
+                Toast.makeText(context, exercise.name, Toast.LENGTH_SHORT).show()
+            }
+        })
         adapter = exerciseAdapter
+
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
@@ -71,4 +80,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
