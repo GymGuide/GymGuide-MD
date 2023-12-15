@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
             showConsultFragment()
         }
 
+        binding.settingsButton.setOnClickListener {
+            selectButton(binding.settingsButton)
+            showSettingsFragment()
+        }
+
         binding.fab.setOnClickListener {
             showScanFragment()
         }
@@ -101,6 +106,12 @@ class MainActivity : AppCompatActivity() {
     private fun showDiscoverFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame_container, DiscoverFragment(), DiscoverFragment::class.java.simpleName)
+            .commit()
+    }
+
+    private fun showSettingsFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_container, SettingsFragment(), SettingsFragment::class.java.simpleName)
             .commit()
     }
 }

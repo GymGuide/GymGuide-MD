@@ -91,14 +91,14 @@
                 app:drawableTopCompat="@drawable/ic_baseline_people_24" />
 
             <TextView
-                android:id="@+id/profileButton"
+                android:id="@+id/settingsButton"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:text="Profile"
+                android:text="Settings"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
                 android:textSize="12sp"

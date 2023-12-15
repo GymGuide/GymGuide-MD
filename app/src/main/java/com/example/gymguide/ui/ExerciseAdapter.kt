@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.example.gymguide.data.Exercise
 import com.example.gymguide.databinding.ItemExerciseBinding
 import com.example.gymguide.databinding.ItemExerciseRecommendationBinding
-import com.example.gymguide.databinding.ItemTrainerBinding
 
 
 class ExerciseAdapter(private val layoutType: Int) :
@@ -18,8 +17,6 @@ class ExerciseAdapter(private val layoutType: Int) :
     private var clickListener: ClickListener? = null
     private val viewTypeOld = 1
     private val viewTypeNew = 2
-    private val viewTypeNew1 = 3
-
 
     inner class ExerciseViewHolder(val binding: ItemExerciseBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -27,8 +24,6 @@ class ExerciseAdapter(private val layoutType: Int) :
     inner class ExerciseViewHolderNew(val binding: ItemExerciseRecommendationBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    inner class ExerciseViewHolderNew1(val binding: ItemTrainerBinding) :
-        RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Exercise>() {
         override fun areItemsTheSame(oldItem: Exercise, newItem: Exercise): Boolean {
@@ -73,15 +68,6 @@ class ExerciseAdapter(private val layoutType: Int) :
                 ExerciseViewHolderNew(bindingNew)
             }
 
-            viewTypeNew1 -> {
-                val bindingNew1 = ItemTrainerBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-                ExerciseViewHolderNew1(bindingNew1)
-            }
-
             else -> throw IllegalArgumentException("Invalid view type: $viewType")
         }
     }
@@ -116,21 +102,6 @@ class ExerciseAdapter(private val layoutType: Int) :
                         .into(ivExercise)
                 }
                 holder.itemView.setOnClickListener { clickListener!!.onItemClicked(exercise) }
-
-
-            }
-
-            is ExerciseViewHolderNew1 -> {
-                val exercise = exercises[position]
-                holder.binding.apply {
-                    tvExerciseName.text = exercise.name
-                    tvExerciseDesc.text = exercise.instructions
-                    Glide.with(root.context)
-                        .load(exercise.picture)
-                        .centerCrop()
-                        .into(ivExercise)
-                }
-                //holder.itemView.setOnClickListener { clickListener!!.onItemClicked(exercise) }
             }
 
         }

@@ -30,16 +30,16 @@
 
             val extras = intent.extras
             var id: String? = extras?.getString("id")
-            var name: String? = extras?.getString("name")
-            var type: String? = extras?.getString("type")
-            var muscle: String? = extras?.getString("muscle")
-            var equipment: String? = extras?.getString("equipment")
-            var difficulty: String? = extras?.getString("difficulty")
-            var instructions: String? = extras?.getString("instructions")
-            var link: String? = extras?.getString("link")
-            var picture: String? = extras?.getString("picture")
+            val name: String? = extras?.getString("name")
+            val type: String? = extras?.getString("type")
+            val muscle: String? = extras?.getString("muscle")
+            val equipment: String? = extras?.getString("equipment")
+            val difficulty: String? = extras?.getString("difficulty")
+            val instructions: String? = extras?.getString("instructions")
+            val link: String? = extras?.getString("link")
+            val picture: String? = extras?.getString("picture")
             val video =
-                "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/_O1xunCfYEM?si=Q22JyuudEKR2Sd4j\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
+                "<iframe width=\"100%\" height=\"100%\" src=\"$link\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
             binding.webView.loadData(video, "text/html", "utf-8")
             binding.webView.settings.javaScriptEnabled = true
             binding.webView.webChromeClient = WebChromeClient()
