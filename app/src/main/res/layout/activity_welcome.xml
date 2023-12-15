@@ -117,7 +117,7 @@ on how to perform it to help you on your transformation journey"
             android:backgroundTint="@color/white"
             android:fontFamily="@font/roboto_bold"
             android:letterSpacing="0"
-            android:text="Login"
+            android:text="Sign In"
             android:textAllCaps="false"
             android:textColor="@color/black" />
     </GridLayout>
