@@ -46,8 +46,7 @@ class HomeFragment : Fragment() {
         val user = auth.currentUser
         user?.let {
             // Name, email address, and profile photo Url
-            val name = it.displayName
-            val email = it.email
+            val name = it.displayName ?: it.email
             val photoUrl = it.photoUrl
 
             // Check if user's email is verified
@@ -57,10 +56,11 @@ class HomeFragment : Fragment() {
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
             val uid = it.uid
+            val welcomeText = "Welcome, $name!"
+            binding.tvWelcome.text = welcomeText
         }
 
-        val welcomeText = "Welcome, ${user?.displayName}!"
-        binding.tvWelcome.text = welcomeText
+
 
         setupRecyclerView()
 

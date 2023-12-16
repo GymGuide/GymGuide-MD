@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gymguide.R
@@ -64,6 +65,14 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         binding.loginButton.setOnClickListener {
+            // Hide keyboard on button click
+            try {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            } catch (e: Exception) {
+                Log.d(TAG, "Couldn't close keyboard: ${e.localizedMessage}")
+            }
+
             binding.progressBar.visibility = View.VISIBLE
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
@@ -150,6 +159,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.tvSignUp.setOnClickListener {
+
+
             val intent = Intent(this, RegisterActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
@@ -162,6 +173,8 @@ class LoginActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+
+
     }
 
     @Deprecated("Deprecated in Java")

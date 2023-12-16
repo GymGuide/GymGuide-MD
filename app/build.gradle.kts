@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.gymguide"
-    compileSdk = 28
+    compileSdk = 34
 
     buildFeatures {
         viewBinding = true
@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.gymguide"
-        minSdk = 30
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -55,15 +55,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    val cameraxVersion = "1.3.0"
-    implementation("androidx.camera:camera-core:${cameraxVersion}")
-    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
-    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
-    implementation("androidx.camera:camera-video:${cameraxVersion}")
-
-    implementation("androidx.camera:camera-view:${cameraxVersion}")
-    implementation("androidx.camera:camera-extensions:${cameraxVersion}")
 
     // Tensorflow Lite dependencies
     implementation("org.tensorflow:tensorflow-lite:2.9.0")

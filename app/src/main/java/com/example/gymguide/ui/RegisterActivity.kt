@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gymguide.R
@@ -64,6 +65,14 @@ class RegisterActivity : AppCompatActivity() {
             .build()
 
         binding.signUpButton.setOnClickListener {
+            // Hide keyboard on button click
+            try {
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            } catch (e: Exception) {
+                Log.d(TAG, "Couldn't close keyboard: ${e.localizedMessage}")
+            }
+
             binding.progressBar.visibility = View.VISIBLE
             val email = binding.etEmail.text.toString().trim()
             val name = binding.etName.text.toString().trim()
