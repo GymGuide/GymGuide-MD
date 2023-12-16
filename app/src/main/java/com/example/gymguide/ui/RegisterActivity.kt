@@ -22,7 +22,7 @@ class RegisterActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
     }
@@ -59,7 +59,12 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             if (TextUtils.isEmpty(passwordAgain)) {
-                binding.etPasswordAgain.error = "Enter password again is empty"
+                binding.etPasswordAgain.error = "Password again is empty"
+                hasError = true
+            }
+
+            if (password != passwordAgain) {
+                binding.etPasswordAgain.error = "Password again is different than password"
                 hasError = true
             }
 
@@ -80,7 +85,7 @@ class RegisterActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT,
                             ).show()
                             val intent = Intent(this, LoginActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
                             startActivity(intent)
                         } else {
                             // If sign in fails, display a message to the user.
@@ -97,6 +102,7 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.tvSignIn.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
         }
     }

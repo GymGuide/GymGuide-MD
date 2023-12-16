@@ -10,6 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,11 +25,14 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/register_bg_custom_input"
+            android:drawableLeft="@drawable/baseline_email_24"
             android:drawablePadding="16dp"
             android:ems="10"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/roboto_light"
             android:hint="Email"
             android:padding="16dp"
+            android:singleLine="true"
+            android:textColorHint="@color/grey_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView41" />
@@ -41,12 +46,14 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/register_bg_custom_input"
+            android:drawableLeft="@drawable/baseline_lock_24"
             android:drawablePadding="16dp"
             android:ems="10"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/roboto_light"
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="16dp"
+            android:textColorHint="@color/grey_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etEmail" />
@@ -62,7 +69,6 @@
             android:text="Remember me"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
@@ -75,7 +81,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_rectangle_background"
             android:backgroundTint="@color/yellow_menu"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/roboto"
             android:letterSpacing="0"
             android:text="Sign In"
             android:textAllCaps="false"
@@ -103,7 +109,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="10dp"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:text="or"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -204,26 +210,27 @@
                 android:id="@+id/tv_no_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:text="Don't have an account?"
                 android:textColor="@color/yellow_menu"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:text="Sign Up"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/tv_forget_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -231,7 +238,7 @@
             android:text="Forget password?"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="@+id/checkBox"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/checkBox" />
@@ -247,6 +254,7 @@
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/tv_welcome_back"
             app:layout_constraintTop_toBottomOf="@+id/tv_welcome_back" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
