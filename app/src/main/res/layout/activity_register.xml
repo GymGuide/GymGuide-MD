@@ -8,8 +8,6 @@
     android:background="@drawable/welcome_background"
     tools:context=".ui.RegisterActivity">
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,83 +16,109 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etName"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etNameLayout"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/register_bg_custom_input"
-            android:drawableLeft="@drawable/baseline_person_24"
-            android:drawablePadding="16dp"
-            android:ems="10"
-            android:fontFamily="@font/roboto_light"
-            android:hint="Name"
-            android:padding="16dp"
-            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView41" />
+            app:layout_constraintTop_toBottomOf="@+id/textView41"
+            app:startIconDrawable="@drawable/baseline_person_24"
+            app:startIconTint="@color/black">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etEmail"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/register_bg_custom_input"
+                android:fontFamily="@font/roboto_light"
+                android:hint="Name"
+                android:singleLine="true"
+                android:textColorHint="@color/grey_menu" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etEmailLayout"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etNameLayout"
+            app:startIconDrawable="@drawable/baseline_email_24"
+            app:startIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/register_bg_custom_input"
+                android:fontFamily="@font/roboto_light"
+                android:hint="Email"
+                android:singleLine="true"
+                android:textColorHint="@color/grey_menu" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etPasswordLayout"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etEmailLayout"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/black"
+            app:startIconDrawable="@drawable/baseline_lock_24"
+            app:startIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/register_bg_custom_input"
+                android:fontFamily="@font/roboto_light"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColorHint="@color/grey_menu" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etConfirmPasswordLayout"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/register_bg_custom_input"
-            android:drawableLeft="@drawable/baseline_email_24"
-            android:drawablePadding="16dp"
-            android:ems="10"
-            android:fontFamily="@font/roboto_light"
-            android:hint="Email"
-            android:padding="16dp"
-            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etName" />
+            app:layout_constraintTop_toBottomOf="@+id/etPasswordLayout"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/black"
+            app:startIconDrawable="@drawable/baseline_lock_24"
+            app:startIconTint="@color/black">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/register_bg_custom_input"
-            android:drawableLeft="@drawable/baseline_lock_24"
-            android:drawablePadding="16dp"
-            android:ems="10"
-            android:fontFamily="@font/roboto_light"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/register_bg_custom_input"
+                android:fontFamily="@font/roboto_light"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:textColorHint="@color/grey_menu" />
 
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPasswordAgain"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/register_bg_custom_input"
-            android:drawableLeft="@drawable/baseline_lock_24"
-            android:drawablePadding="16dp"
-            android:ems="10"
-            android:fontFamily="@font/roboto_light"
-            android:hint="Password (Again)"
-            android:inputType="textPassword"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
             android:id="@+id/checkBox"
@@ -111,7 +135,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etPasswordAgain" />
+            app:layout_constraintTop_toBottomOf="@+id/etConfirmPasswordLayout" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signUpButton"
@@ -258,7 +282,7 @@
                 android:id="@+id/tv_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:fontFamily="@font/roboto"
                 android:text="Sign In"
                 android:textColor="@color/white"

@@ -41,7 +41,7 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.etEmail.text.toString().trim()
             val name = binding.etName.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
-            val passwordAgain = binding.etPasswordAgain.text.toString().trim()
+            val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
             var hasError = false
 
@@ -66,14 +66,14 @@ class RegisterActivity : AppCompatActivity() {
                 hasError = true
             }
 
-            if (TextUtils.isEmpty(passwordAgain)) {
-                binding.etPasswordAgain.error = "Password again is empty"
+            if (TextUtils.isEmpty(confirmPassword)) {
+                binding.etConfirmPassword.error = "Password again is empty"
                 hasError = true
-            } else if (passwordAgain.length < 8) {
+            } else if (confirmPassword.length < 8) {
                 binding.etPassword.error = "Password must be at least 8 characters long"
                 hasError = true
-            } else if (password != passwordAgain) {
-                binding.etPasswordAgain.error = "Password again is different than password"
+            } else if (password != confirmPassword) {
+                binding.etConfirmPassword.error = "Password again is different than password"
                 hasError = true
             }
 
