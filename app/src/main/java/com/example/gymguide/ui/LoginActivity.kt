@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gymguide.databinding.ActivityLoginBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -45,10 +47,16 @@ class LoginActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(email)) {
                 binding.etEmail.error = "Email is empty"
                 hasError = true
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.etEmail.error = "Invalid email format"
+                hasError = true
             }
 
             if (TextUtils.isEmpty(password)) {
                 binding.etPassword.error = "Password is empty"
+                hasError = true
+            } else if (password.length < 8) {
+                binding.etPassword.error = "Password must be at least 8 characters long"
                 hasError = true
             }
 
@@ -74,11 +82,7 @@ class LoginActivity : AppCompatActivity() {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LoginActivity", "signInWithEmail:failure", task.exception)
-                            Toast.makeText(
-                                baseContext,
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            Snackbar.make(binding.loginConstraintLayout, "Login failed. ${task.exception?.localizedMessage}", Snackbar.LENGTH_LONG).show()
                         }
                     }
             }

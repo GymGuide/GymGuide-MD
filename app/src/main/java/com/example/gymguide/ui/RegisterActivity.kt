@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gymguide.databinding.ActivityRegisterBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -46,6 +48,9 @@ class RegisterActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(email)) {
                 binding.etEmail.error = "Email is empty"
                 hasError = true
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                binding.etEmail.error = "Invalid email format"
+                hasError = true
             }
 
             if (TextUtils.isEmpty(name)) {
@@ -56,14 +61,18 @@ class RegisterActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(password)) {
                 binding.etPassword.error = "Password is empty"
                 hasError = true
+            } else if (password.length < 8) {
+                binding.etPassword.error = "Password must be at least 8 characters long"
+                hasError = true
             }
 
             if (TextUtils.isEmpty(passwordAgain)) {
                 binding.etPasswordAgain.error = "Password again is empty"
                 hasError = true
-            }
-
-            if (password != passwordAgain) {
+            } else if (passwordAgain.length < 8) {
+                binding.etPassword.error = "Password must be at least 8 characters long"
+                hasError = true
+            } else if (password != passwordAgain) {
                 binding.etPasswordAgain.error = "Password again is different than password"
                 hasError = true
             }
@@ -90,11 +99,7 @@ class RegisterActivity : AppCompatActivity() {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("RegisterActivity", "createUserWithEmail:failure", task.exception)
-                            Toast.makeText(
-                                baseContext,
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            Snackbar.make(binding.registerConstraintLayout, "Register failed. ${task.exception?.localizedMessage}", Snackbar.LENGTH_LONG).show()
                         }
                     }
             }
