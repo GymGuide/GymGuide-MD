@@ -20,6 +20,8 @@ import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import java.text.DateFormat.getDateInstance
+import java.util.Date
 
 
 class HomeFragment : Fragment() {
@@ -38,57 +40,61 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
 
-        auth = Firebase.auth
+            auth = Firebase.auth
 
-        val user = auth.currentUser
-        user?.let {
-            // Name, email address, and profile photo Url
-            val name = it.displayName ?: it.email
-            val photoUrl = it.photoUrl
+            val user = auth.currentUser
 
-            // Check if user's email is verified
-            val emailVerified = it.isEmailVerified
+            user?.let {
+                // Name, email address, and profile photo Url
+                val name = it.displayName ?: it.email
+                val photoUrl = it.photoUrl
 
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            val uid = it.uid
-            val welcomeText = "Welcome, $name!"
-            binding.tvWelcome.text = welcomeText
-        }
+                // Check if user's email is verified
+                val emailVerified = it.isEmailVerified
 
+                // The user's ID, unique to the Firebase project. Do NOT use this value to
+                // authenticate with your backend server, if you have one. Use
+                // FirebaseUser.getIdToken() instead.
+                val uid = it.uid
+                val welcomeText = "Welcome, $name!"
+                binding.tvWelcome.text = welcomeText
+            }
 
+            val sdf = getDateInstance()
+            val currentDate = sdf.format(Date())
 
-        setupRecyclerView()
+            binding.tvCurrentDate.text = currentDate
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                try {
-                    val response = RetrofitInstance.api.getExercises()
+            setupRecyclerView()
 
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        if (body != null) {
-                            exerciseAdapter.exercises = body.data
+            lifecycleScope.launch {
+                lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                    try {
+                        val response = RetrofitInstance.api.getExercises()
+
+                        if (response.isSuccessful) {
+                            val body = response.body()
+                            if (body != null) {
+                                exerciseAdapter.exercises = body.data
+                            } else {
+                                Log.e("HomeFragment", "Response body is null")
+                            }
                         } else {
-                            Log.e("HomeFragment", "Response body is null")
+                            Log.e("HomeFragment", "Response not successful: ${response.code()}")
                         }
-                    } else {
-                        Log.e("HomeFragment", "Response not successful: ${response.code()}")
+                    } catch (e: IOException) {
+                        Log.e("HomeFragment", "IOException, you might not have internet connection")
+                    } catch (e: HttpException) {
+                        Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
+                    } finally {
+                        //binding.progressBar.isVisible = false
                     }
-                } catch (e: IOException) {
-                    Log.e("HomeFragment", "IOException, you might not have internet connection")
-                } catch (e: HttpException) {
-                    Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
-                } finally {
-                    //binding.progressBar.isVisible = false
                 }
             }
         }
-    }
 
     private fun setupRecyclerView() = binding.rvExercise.apply {
         exerciseAdapter = ExerciseAdapter(1)

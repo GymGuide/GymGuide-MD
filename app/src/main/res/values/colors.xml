@@ -6,6 +6,7 @@
     <color name="grey_navigation">#333333</color>
     <color name="grey_menu">#828282</color>
     <color name="grey_text">#C8C8C8</color>
+    <color name="grey_line">#2D303A</color>
 
     <color name="yellow_menu">#F2C94C</color>
 
