@@ -116,9 +116,6 @@ class ScanFragment : Fragment() {
                 picture = Bitmap.createScaledBitmap(picture, imageSize, imageSize, false)
                 intent.putExtra("picture",picture)
                 startActivity(intent)
-                //binding.imageView.setImageBitmap(image)
-                //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
-                //classifyImage(image)
             }
         }
     }
@@ -140,12 +137,8 @@ class ScanFragment : Fragment() {
                     picture = Bitmap.createScaledBitmap(picture, imageSize, imageSize, false)
                     intent.putExtra("picture", picture)
                     startActivity(intent)
-                    //binding.imageView.setImageBitmap(image)
-                    //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false)
-                    //classifyImage(image)
                 } catch (e: IOException) {
                     e.printStackTrace()
-                    // Handle the exception
                 }
             }
         }

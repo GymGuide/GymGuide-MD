@@ -59,6 +59,9 @@ class HomeFragment : Fragment() {
             val uid = it.uid
         }
 
+        val welcomeText = "Welcome, ${user?.displayName}!"
+        binding.tvWelcome.text = welcomeText
+
         setupRecyclerView()
 
         lifecycleScope.launch {

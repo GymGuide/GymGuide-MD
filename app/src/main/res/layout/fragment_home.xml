@@ -23,7 +23,7 @@
             android:fontFamily="@font/roboto"
             android:text="Wednesday, October 18, 2023"
             android:textColor="@color/white"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,9 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto_bold"
-            android:text="Welcome To GymGuide"
+            android:text="Welcome, John Doe!"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 

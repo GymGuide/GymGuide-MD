@@ -5,4 +5,5 @@
     <string name="unknown">UNKNOWN</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_web_client_id">1044552889284-t7vltrrcghvrfhrjuep38vgublh26s67.apps.googleusercontent.com</string>
 </resources>
