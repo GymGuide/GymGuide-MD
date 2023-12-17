@@ -3,7 +3,9 @@
     import android.content.Intent
     import android.os.Bundle
     import android.util.Log
+    import android.view.View
     import android.webkit.WebChromeClient
+    import android.webkit.WebSettings
     import androidx.appcompat.app.AppCompatActivity
     import androidx.lifecycle.Lifecycle
     import androidx.lifecycle.lifecycleScope
@@ -43,6 +45,8 @@
             binding.webView.loadData(video, "text/html", "utf-8")
             binding.webView.settings.javaScriptEnabled = true
             binding.webView.webChromeClient = WebChromeClient()
+            binding.webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+            binding.webView.settings.domStorageEnabled = true
 
             binding.tvExerciseName.text = name
             binding.tvExerciseDetail.text = instructions
@@ -55,30 +59,12 @@
 
             setupRecyclerView()
 
-            lifecycleScope.launch {
-                lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                    try {
-                        val response = RetrofitInstance.api.getExercise(equipment!!)
+            fetchDataFromAPI(equipment)
 
-                        if (response.isSuccessful) {
-                            val body = response.body()
-                            if (body != null) {
-                                exerciseAdapter.exercises = body.data
-                            } else {
-                                Log.e("HomeFragment", "Response body is null")
-                            }
-                        } else {
-                            Log.e("HomeFragment", "Response not successful: ${response.code()}")
-                        }
-                    } catch (e: IOException) {
-                        Log.e("HomeFragment", "IOException, you might not have internet connection")
-                    } catch (e: HttpException) {
-                        Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
-                    } finally {
-                        //binding.progressBar.isVisible = false
-                    }
-                }
+            binding.failedIv.setOnClickListener {
+                fetchDataFromAPI(equipment)
             }
+
         }
 
         private fun setupRecyclerView() = binding.rvExercise.apply {
@@ -102,4 +88,46 @@
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
+        private fun fetchDataFromAPI(equipment: String?) {
+            lifecycleScope.launch {
+                lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                    try {
+                        binding.progressBar.visibility = View.VISIBLE
+                        val response = RetrofitInstance.api.getExercise(equipment!!)
+
+                        if (response.isSuccessful) {
+                            val body = response.body()
+                            if (body != null) {
+                                exerciseAdapter.exercises = body.data
+                                // Show success layout
+                                binding.successLayout.visibility = View.VISIBLE
+                                binding.failedLayout.visibility = View.GONE
+                            } else {
+                                Log.e("HomeFragment", "Response body is null")
+                                // Show failed layout
+                                binding.successLayout.visibility = View.GONE
+                                binding.failedLayout.visibility = View.VISIBLE
+                            }
+                        } else {
+                            // Show failed layout
+                            binding.successLayout.visibility = View.GONE
+                            binding.failedLayout.visibility = View.VISIBLE
+                            Log.e("HomeFragment", "Response not successful: ${response.code()}")
+                        }
+                    } catch (e: IOException) {
+                        // Show failed layout
+                        binding.successLayout.visibility = View.GONE
+                        binding.failedLayout.visibility = View.VISIBLE
+                        Log.e("HomeFragment", "IOException, you might not have an internet connection")
+                    } catch (e: HttpException) {
+                        // Show failed layout
+                        binding.successLayout.visibility = View.GONE
+                        binding.failedLayout.visibility = View.VISIBLE
+                        Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
+                    } finally {
+                        binding.progressBar.visibility = View.GONE
+                    }
+                }
+            }
+        }
     }

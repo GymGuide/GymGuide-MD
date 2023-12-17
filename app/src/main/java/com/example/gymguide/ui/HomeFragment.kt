@@ -40,82 +40,102 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-            auth = Firebase.auth
+        auth = Firebase.auth
 
-            val user = auth.currentUser
+        val user = auth.currentUser
 
-            user?.let {
-                // Name, email address, and profile photo Url
-                val name = it.displayName ?: it.email
-                val photoUrl = it.photoUrl
+        user?.let {
+            // Name, email address, and profile photo Url
+            val name = it.displayName ?: it.email
+            val photoUrl = it.photoUrl
 
-                // Check if user's email is verified
-                val emailVerified = it.isEmailVerified
+            // Check if user's email is verified
+            val emailVerified = it.isEmailVerified
 
-                // The user's ID, unique to the Firebase project. Do NOT use this value to
-                // authenticate with your backend server, if you have one. Use
-                // FirebaseUser.getIdToken() instead.
-                val uid = it.uid
-                val welcomeText = "Welcome, $name!"
-                binding.tvWelcome.text = welcomeText
-            }
-
-            val sdf = getDateInstance()
-            val currentDate = sdf.format(Date())
-
-            binding.tvCurrentDate.text = currentDate
-
-            setupRecyclerView()
-
-            lifecycleScope.launch {
-                lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                    try {
-                        val response = RetrofitInstance.api.getExercises()
-
-                        if (response.isSuccessful) {
-                            val body = response.body()
-                            if (body != null) {
-                                exerciseAdapter.exercises = body.data
-                            } else {
-                                Log.e("HomeFragment", "Response body is null")
-                            }
-                        } else {
-                            Log.e("HomeFragment", "Response not successful: ${response.code()}")
-                        }
-                    } catch (e: IOException) {
-                        Log.e("HomeFragment", "IOException, you might not have internet connection")
-                    } catch (e: HttpException) {
-                        Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
-                    } finally {
-                        //binding.progressBar.isVisible = false
-                    }
-                }
-            }
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            val uid = it.uid
+            val welcomeText = "Welcome, $name!"
+            binding.tvWelcome.text = welcomeText
         }
+
+        val sdf = getDateInstance()
+        val currentDate = sdf.format(Date())
+
+        binding.tvCurrentDate.text = currentDate
+
+        setupRecyclerView()
+
+        fetchDataFromAPI()
+
+        binding.failedIv.setOnClickListener {
+            fetchDataFromAPI()
+        }
+    }
 
     private fun setupRecyclerView() = binding.rvExercise.apply {
         exerciseAdapter = ExerciseAdapter(1)
         exerciseAdapter.setClickListener(object : ExerciseAdapter.ClickListener {
             override fun onItemClicked(exercise: Exercise) {
                 val intent = Intent(requireContext(), DetailExerciseActivity::class.java)
-                intent.putExtra("id",exercise.id)
-                intent.putExtra("name",exercise.name)
-                intent.putExtra("type",exercise.type)
-                intent.putExtra("muscle",exercise.muscle)
-                intent.putExtra("equipment",exercise.equipment)
-                intent.putExtra("difficulty",exercise.difficulty)
-                intent.putExtra("instructions",exercise.instructions)
-                intent.putExtra("link",exercise.link)
-                intent.putExtra("picture",exercise.picture)
+                intent.putExtra("id", exercise.id)
+                intent.putExtra("name", exercise.name)
+                intent.putExtra("type", exercise.type)
+                intent.putExtra("muscle", exercise.muscle)
+                intent.putExtra("equipment", exercise.equipment)
+                intent.putExtra("difficulty", exercise.difficulty)
+                intent.putExtra("instructions", exercise.instructions)
+                intent.putExtra("link", exercise.link)
+                intent.putExtra("picture", exercise.picture)
                 startActivity(intent)
             }
         })
         adapter = exerciseAdapter
 
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    private fun fetchDataFromAPI() {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                try {
+                    binding.progressBar.visibility = View.VISIBLE
+
+                    val response = RetrofitInstance.api.getExercises()
+
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            exerciseAdapter.exercises = body.data
+                            binding.successLayout.visibility = View.VISIBLE
+                            binding.failedLayout.visibility = View.GONE
+                        } else {
+                            binding.successLayout.visibility = View.GONE
+                            binding.failedLayout.visibility = View.VISIBLE
+                            Log.e("HomeFragment", "Response body is null")
+                        }
+                    } else {
+                        binding.successLayout.visibility = View.GONE
+                        binding.failedLayout.visibility = View.VISIBLE
+                        Log.e("HomeFragment", "Response not successful: ${response.code()}")
+                    }
+                } catch (e: IOException) {
+                    binding.successLayout.visibility = View.GONE
+                    binding.failedLayout.visibility = View.VISIBLE
+                    Log.e("HomeFragment", "IOException, you might not have internet connection")
+                } catch (e: HttpException) {
+                    binding.successLayout.visibility = View.GONE
+                    binding.failedLayout.visibility = View.VISIBLE
+                    Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
+                } finally {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

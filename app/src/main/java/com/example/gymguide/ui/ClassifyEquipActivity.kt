@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +30,7 @@ class ClassifyEquipActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClassifyEquipBinding
     private lateinit var exerciseAdapter: ExerciseAdapter
     private var prediction: String = "No Prediction"
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClassifyEquipBinding.inflate(layoutInflater)
@@ -49,27 +51,47 @@ class ClassifyEquipActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
+        fetchDataFromAPI()
+
+        binding.failedIv.setOnClickListener {
+            fetchDataFromAPI()
+        }
+    }
+
+    private fun fetchDataFromAPI() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 try {
+                    binding.progressBar.visibility = View.VISIBLE
+
                     val response = RetrofitInstance.api.getExercise(prediction)
 
                     if (response.isSuccessful) {
                         val body = response.body()
                         if (body != null) {
                             exerciseAdapter.exercises = body.data
+                            binding.successLayout.visibility = View.VISIBLE
+                            binding.failedLayout.visibility = View.GONE
                         } else {
+                            binding.successLayout.visibility = View.GONE
+                            binding.failedLayout.visibility = View.VISIBLE
                             Log.e("HomeFragment", "Response body is null")
                         }
                     } else {
+                        binding.successLayout.visibility = View.GONE
+                        binding.failedLayout.visibility = View.VISIBLE
                         Log.e("HomeFragment", "Response not successful: ${response.code()}")
                     }
                 } catch (e: IOException) {
+                    binding.successLayout.visibility = View.GONE
+                    binding.failedLayout.visibility = View.VISIBLE
                     Log.e("HomeFragment", "IOException, you might not have internet connection")
                 } catch (e: HttpException) {
+                    binding.successLayout.visibility = View.GONE
+                    binding.failedLayout.visibility = View.VISIBLE
                     Log.e("HomeFragment", "HttpException, unexpected response: ${e.code()}")
                 } finally {
-                    //binding.progressBar.isVisible = false
+                    binding.progressBar.visibility = View.GONE
                 }
             }
         }

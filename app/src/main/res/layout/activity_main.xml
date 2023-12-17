@@ -76,14 +76,14 @@
                 app:drawableTopCompat="@drawable/ic_baseline_home_24" />
 
             <TextView
-                android:id="@+id/consultButton"
+                android:id="@+id/rankButton"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:text="Consult"
+                android:text="Rank"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
                 android:textSize="12sp"

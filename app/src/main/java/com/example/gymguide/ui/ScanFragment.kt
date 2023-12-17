@@ -51,13 +51,17 @@ class ScanFragment : Fragment() {
                 onGalleryActivityResult(result)
             }
 
-        binding.ivScanMeal.setOnClickListener {
-            showPickImageDialog()
+        binding.ivScanEquip.setOnClickListener {
+            showPickImageDialogEquip()
         }
 
+        binding.ivConsultTrainer.setOnClickListener {
+            val intent = Intent(requireContext(), TrainerActivity::class.java)
+            startActivity(intent)
+        }
     }
 
-    private fun showPickImageDialog() {
+    private fun showPickImageDialogEquip() {
         val builderSingle = AlertDialog.Builder(requireContext()) // Use 'this' instead of 'MainActivity.this'
         builderSingle.setTitle("Select One Option")
         val arrayAdapter = ArrayAdapter<String>(

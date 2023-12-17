@@ -45,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -125,8 +126,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.ivGoogleSignIn.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
             oneTapClient.beginSignIn(signInRequest)
                 .addOnSuccessListener(this) { result ->
+                    binding.progressBar.visibility = View.GONE
                     try {
                         startIntentSenderForResult(
                             result.pendingIntent.intentSender, REQ_ONE_TAP,
@@ -136,6 +139,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener(this) { e ->
+                    binding.progressBar.visibility = View.GONE
                     // No saved credentials found. Launch the One Tap sign-up flow, or
                     // do nothing and continue presenting the signed-out UI.
                     e.localizedMessage?.let { it1 -> Log.d(TAG, it1) }

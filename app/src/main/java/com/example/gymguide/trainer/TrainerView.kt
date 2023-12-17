@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gymguide.data.DataSource
 import com.example.gymguide.data.Trainer
-import com.example.gymguide.databinding.FragmentTrainerBinding
+import com.example.gymguide.databinding.FragmentTrainerViewBinding
 import com.example.gymguide.ui.DetailTrainerActivity
 import com.example.gymguide.ui.TrainerAdapter
 
 class TrainerView : Fragment() {
 
-    private var _binding: FragmentTrainerBinding? = null
+    private var _binding: FragmentTrainerViewBinding? = null
 
     private val binding get() = _binding!!
     private lateinit var trainerAdapter: TrainerAdapter
@@ -23,7 +23,7 @@ class TrainerView : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentTrainerBinding.inflate(inflater, container, false)
+        _binding = FragmentTrainerViewBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -60,12 +60,13 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
-                android:hint="Password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/register_bg_custom_input"
                 android:fontFamily="@font/roboto_light"
+                android:hint="Password"
                 android:inputType="textPassword"
+                android:singleLine="true"
                 android:textColorHint="@color/grey_menu" />
 
         </com.google.android.material.textfield.TextInputLayout>

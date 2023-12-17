@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity() {
             showDiscoverFragment()
         }
 
-        binding.consultButton.setOnClickListener {
-            selectButton(binding.consultButton)
-            showConsultFragment()
+        binding.rankButton.setOnClickListener {
+            selectButton(binding.rankButton)
+            showRankFragment()
         }
 
         binding.settingsButton.setOnClickListener {
@@ -45,9 +45,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fab.setOnClickListener {
+            selectedButton?.run {
+                animateButton(this, 1f)
+                setTextColor(ContextCompat.getColor(context, R.color.grey_menu))
+                setTextViewDrawableColor(this, R.color.grey_menu)
+            }
             showScanFragment()
         }
-
     }
 
     private fun selectButton(textview: TextView) {
@@ -90,9 +94,9 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun showConsultFragment() {
+    private fun showDiscoverFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_container, ConsultFragment(), ConsultFragment::class.java.simpleName)
+            .replace(R.id.frame_container, DiscoverFragment(), DiscoverFragment::class.java.simpleName)
             .commit()
     }
 
@@ -102,9 +106,9 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun showDiscoverFragment() {
+    private fun showRankFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_container, DiscoverFragment(), DiscoverFragment::class.java.simpleName)
+            .replace(R.id.frame_container, RankFragment(), RankFragment::class.java.simpleName)
             .commit()
     }
 
