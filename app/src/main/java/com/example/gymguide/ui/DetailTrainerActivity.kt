@@ -3,12 +3,9 @@ package com.example.gymguide.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.gymguide.R
 import com.example.gymguide.data.Article
 import com.example.gymguide.data.TrainerDataSource
-import com.example.gymguide.data.Trainer
 import com.example.gymguide.databinding.ActivityDetailTrainerBinding
 
 class DetailTrainerActivity : AppCompatActivity() {

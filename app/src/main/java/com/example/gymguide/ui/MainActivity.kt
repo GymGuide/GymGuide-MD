@@ -57,14 +57,14 @@ class MainActivity : AppCompatActivity() {
             setTextViewDrawableColor(this, R.color.grey_menu)
         }
 
-        if (textview != null) {
+        selectedButton = if (textview != null) {
             textview.setTextColor(ContextCompat.getColor(textview.context, R.color.yellow_menu))
             setTextViewDrawableColor(textview, R.color.yellow_menu)
             animateButton(textview, 1f)
 
-            selectedButton = textview
+            textview
         } else {
-            selectedButton = null
+            null
         }
     }
 

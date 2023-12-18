@@ -2,13 +2,9 @@ package com.example.gymguide.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.fragment.app.Fragment
 import android.content.res.Resources
-import android.location.Location
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,14 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.gymguide.R
 import com.example.gymguide.databinding.FragmentMapsBinding
-import com.example.gymguide.databinding.FragmentScanBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,7 +27,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.Task
 
 class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -98,7 +91,7 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
         return binding.root
     }

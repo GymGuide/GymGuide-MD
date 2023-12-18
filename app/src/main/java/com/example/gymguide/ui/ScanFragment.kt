@@ -74,7 +74,6 @@ class ScanFragment : Fragment() {
     private fun showMapsFragment() {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.frame_container, MapsFragment(), MapsFragment::class.java.simpleName)
-            .addToBackStack(null)
             .commit()
     }
 

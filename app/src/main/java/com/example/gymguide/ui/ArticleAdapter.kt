@@ -7,11 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.gymguide.data.Article
-import com.example.gymguide.data.TrainerDataSource
 import com.example.gymguide.databinding.ItemArticleBinding
-import com.example.gymguide.databinding.ItemExerciseBinding
-import com.example.gymguide.databinding.ItemExerciseRecommendationBinding
-import com.example.gymguide.databinding.ItemTrainerBinding
 
 
 class ArticleAdapter :
