@@ -12,7 +12,6 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginBottom="88dp"
             android:overScrollMode="never"
             android:id="@+id/rv_trainer"
             android:layout_width="match_parent"

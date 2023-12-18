@@ -20,5 +20,4 @@ class DiscoverFragment : Fragment() {
         return binding.root
     }
 
-
 }

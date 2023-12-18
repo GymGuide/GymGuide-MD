@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.gymguide.R
 import com.example.gymguide.data.Trainer
 import com.example.gymguide.databinding.ItemTrainerBinding
 
@@ -50,13 +52,17 @@ class TrainerAdapter :
 
     override fun onBindViewHolder(holder: TrainerViewHolder, position: Int) {
         val trainer = trainers[position]
+        val context = holder.itemView.context
+
         holder.binding.apply {
-            tvExerciseName.text = trainer.name
-            tvExerciseDesc.text = trainer.nim
-            //Glide.with(root.context)
-            //    .load(trainer.picture)
-            //    .centerCrop()
-            //    .into(ivExercise)
+            tvTrainerName.text = trainer.name
+            tvTrainerLocation.text = context.getString(R.string.trainer_desc_format, trainer.location)
+            tvTrainerRating.text = context.getString(R.string.trainer_rating_format, trainer.rating.toString())
+
+            Glide.with(root.context)
+                .load(trainer.picture)
+                .centerCrop()
+                .into(ivTrainer)
         }
         holder.itemView.setOnClickListener { clickListener?.onItemClicked(trainer) }
     }

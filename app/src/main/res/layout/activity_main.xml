@@ -88,7 +88,7 @@
                 android:textColor="#9E9E9E"
                 android:textSize="12sp"
                 app:drawableTint="@color/grey_menu"
-                app:drawableTopCompat="@drawable/ic_baseline_people_24" />
+                app:drawableTopCompat="@drawable/baseline_shield_24" />
 
             <TextView
                 android:id="@+id/settingsButton"

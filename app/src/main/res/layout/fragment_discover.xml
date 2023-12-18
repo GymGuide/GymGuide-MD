@@ -9,7 +9,7 @@
     tools:context=".ui.DiscoverFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="100dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

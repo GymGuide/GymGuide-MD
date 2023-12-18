@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.gymguide.data.DataSource
 import com.example.gymguide.data.Trainer
+import com.example.gymguide.data.TrainerDataSource
 import com.example.gymguide.databinding.FragmentTrainerViewBinding
 import com.example.gymguide.ui.DetailTrainerActivity
 import com.example.gymguide.ui.TrainerAdapter
@@ -32,7 +32,7 @@ class TrainerView : Fragment() {
 
         setupRecyclerView()
 
-        trainerAdapter.trainers = DataSource.trainers
+        trainerAdapter.trainers = TrainerDataSource.trainers
 
     }
 
@@ -42,7 +42,7 @@ class TrainerView : Fragment() {
             override fun onItemClicked(trainer: Trainer) {
                 val intent = Intent(requireContext(), DetailTrainerActivity::class.java)
                 intent.putExtra("name",trainer.name)
-                intent.putExtra("nim",trainer.nim)
+                intent.putExtra("location",trainer.location)
                 startActivity(intent)
             }
         })
@@ -50,8 +50,4 @@ class TrainerView : Fragment() {
         layoutManager = LinearLayoutManager(context)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

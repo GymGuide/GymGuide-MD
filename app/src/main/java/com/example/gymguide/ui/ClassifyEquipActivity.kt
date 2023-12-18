@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.gymguide.data.Exercise
 import com.example.gymguide.data.RetrofitInstance
 import com.example.gymguide.databinding.ActivityClassifyEquipBinding
-import com.example.gymguide.ml.GymEquipmentV3
+import com.example.gymguide.ml.GymEquipmentQuantized
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
@@ -120,7 +120,7 @@ class ClassifyEquipActivity : AppCompatActivity() {
 
     private fun classifyImage(image: Bitmap) {
         try {
-            val model: GymEquipmentV3 = GymEquipmentV3.newInstance(applicationContext)
+            val model: GymEquipmentQuantized = GymEquipmentQuantized.newInstance(applicationContext)
             // Creates inputs for reference.
             val inputFeature0 =
                 TensorBuffer.createFixedSize(intArrayOf(1, 150, 150, 3), DataType.FLOAT32)
@@ -133,15 +133,15 @@ class ClassifyEquipActivity : AppCompatActivity() {
             for (i in 0 until imageSize) {
                 for (j in 0 until imageSize) {
                     val `val` = intValues[pixel++] // RGB
-                    byteBuffer.putFloat((`val` shr 16 and 0xFF) * (1f / 1))
-                    byteBuffer.putFloat((`val` shr 8 and 0xFF) * (1f / 1))
-                    byteBuffer.putFloat((`val` and 0xFF) * (1f / 1))
+                    byteBuffer.putFloat((`val` shr 16 and 0xFF) * (1f / 255f))  // Normalize to [0, 1]
+                    byteBuffer.putFloat((`val` shr 8 and 0xFF) * (1f / 255f))
+                    byteBuffer.putFloat((`val` and 0xFF) * (1f / 255f))
                 }
             }
             inputFeature0.loadBuffer(byteBuffer)
 
             // Runs model inference and gets result.
-            val outputs: GymEquipmentV3.Outputs = model.process(inputFeature0)
+            val outputs: GymEquipmentQuantized.Outputs = model.process(inputFeature0)
             val outputFeature0: TensorBuffer = outputs.outputFeature0AsTensorBuffer
             val confidences = outputFeature0.floatArray
             // find the index of the class with the biggest confidence.

@@ -59,6 +59,11 @@ class ScanFragment : Fragment() {
             val intent = Intent(requireContext(), TrainerActivity::class.java)
             startActivity(intent)
         }
+
+        binding.muscleMapButton.setOnClickListener {
+            val intent = Intent(requireContext(), MuscleMapActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun showPickImageDialogEquip() {
@@ -146,11 +151,5 @@ class ScanFragment : Fragment() {
                 }
             }
         }
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
