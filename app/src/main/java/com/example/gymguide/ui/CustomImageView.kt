@@ -1,3 +1,4 @@
+// CustomImageView.kt
 package com.example.gymguide.ui
 
 import android.content.Context
@@ -23,23 +24,19 @@ class CustomImageView : AppCompatImageView {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                // Handle touch down event
                 isInsideImage = isTouchInsideImage(event)
                 if (isInsideImage) {
                     alpha = 1f
+                    return true
                 }
-                return true
             }
             MotionEvent.ACTION_UP -> {
-                // Handle touch up event
                 if (isInsideImage) {
                     handler.postDelayed({
                         alpha = 0f
-                        // Perform click action and start MuscleDetailActivity
-                        performClick()
-                    }, 500) // 500 milliseconds delay (adjust as needed)
+                    }, 500)
+                    performClick()
                 }
-                return true
             }
         }
         return false
@@ -54,18 +51,13 @@ class CustomImageView : AppCompatImageView {
     private fun isTouchInsideImage(event: MotionEvent): Boolean {
         val x = event.x.toInt()
         val y = event.y.toInt()
-
         val bmp = getBitmapFromView(this)
-
         val color = bmp.getPixel(x, y)
-
-        return color != 0 // Check for non-transparent part
+        return color != 0
     }
 
     private fun getBitmapFromView(view: CustomImageView): Bitmap {
-        val bitmap = Bitmap.createBitmap(
-            view.width, view.height, Bitmap.Config.ARGB_8888
-        )
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
         return bitmap

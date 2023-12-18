@@ -15,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,68 +34,68 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_calves"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_calves" />
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_quads"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_quads" />
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_chest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_chest" />
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_traps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_traps" />
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_shoulders"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_shoulders" />
 
-        <ImageView
-            android:id="@+id/iv_bicep"
+        <com.example.gymguide.ui.CustomImageView
+            android:id="@+id/iv_biceps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_biceps" />
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_forearms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_forearms" />
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_obliques"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
             app:srcCompat="@drawable/muscle_front_obliques" />
 
-        <ImageView
+        <com.example.gymguide.ui.CustomImageView
             android:id="@+id/iv_abdominals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
-            app:srcCompat="@drawable/muscle_front_abs" />
+            app:srcCompat="@drawable/muscle_front_abdominals" />
 
     </FrameLayout>
 

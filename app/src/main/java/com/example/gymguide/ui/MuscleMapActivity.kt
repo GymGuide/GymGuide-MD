@@ -1,3 +1,4 @@
+// MuscleMapActivity.kt
 package com.example.gymguide.ui
 
 import android.content.Intent
@@ -13,45 +14,17 @@ class MuscleMapActivity : AppCompatActivity() {
         binding = ActivityMuscleMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.ivQuads.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
+        val muscleClickListener = { startActivity(Intent(this, MuscleDetailActivity::class.java)) }
 
-        binding.ivChest.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.ivTraps.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.ivShoulders.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.ivBicep.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.ivForearms.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.ivObliques.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.ivAbdominals.setOnClickListener {
-            val intent = Intent(this, MuscleDetailActivity::class.java)
-            startActivity(intent)
-        }
-
+        // Set up CustomImageViews and attach click listener
+        binding.ivCalves.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivQuads.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivChest.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivTraps.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivShoulders.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivBiceps.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivForearms.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivObliques.apply { setOnClickListener { muscleClickListener() } }
+        binding.ivAbdominals.apply { setOnClickListener { muscleClickListener() } }
     }
 }
