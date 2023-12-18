@@ -30,6 +30,7 @@ class CustomImageView : AppCompatImageView {
                     return true
                 }
             }
+
             MotionEvent.ACTION_UP -> {
                 if (isInsideImage) {
                     handler.postDelayed({
@@ -44,7 +45,6 @@ class CustomImageView : AppCompatImageView {
 
     override fun performClick(): Boolean {
         super.performClick()
-
         return true
     }
 
