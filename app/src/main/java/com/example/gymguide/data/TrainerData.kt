@@ -1,5 +1,11 @@
 package com.example.gymguide.data
 
+import com.example.gymguide.R
+
+/**
+ * @author Muammar Ahlan Abimanyu (muammarahlnn)
+ * @file DataSource, 18/02/2023 21.09 by Muammar Ahlan Abimanyu
+ */
 object TrainerDataSource {
     var trainers: List<Trainer> = generateDummyTrainers()
     private fun generateDummyTrainers(): ArrayList<Trainer> {
@@ -15,5 +21,25 @@ object TrainerDataSource {
         trainers.add(Trainer("Brook", "SHP09", "https://reqres.in/img/faces/9-image.jpg", 3.8))
         trainers.add(Trainer("Jimbei", "SHP010", "https://reqres.in/img/faces/10-image.jpg", 3.9))
         return trainers
+    }
+
+    var articles: List<Article> = generateDummyArticles()
+    private fun generateDummyArticles(): ArrayList<Article> {
+        val articles: ArrayList<Article> = ArrayList()
+        articles.add(
+            Article(
+                name = "Exercise and the Brain",
+                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                pictureUrl = R.drawable.sample_dumbbell
+            )
+        )
+        articles.add(
+            Article(
+                name = "5 Benefits of HIIT",
+                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                pictureUrl = R.drawable.sample_exercise_photo
+            )
+        )
+        return articles
     }
 }

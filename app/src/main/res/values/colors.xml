@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#0A0A0A</color>
+    <color name="semi_black">#212121</color>
+    <color name="text_black">#332E2E</color>
     <color name="white">#FFFFFFFF</color>
 
     <color name="grey_navigation">#333333</color>
     <color name="grey_menu">#828282</color>
     <color name="grey_text">#C8C8C8</color>
     <color name="grey_line">#2D303A</color>
+    <color name="grey_text_300">#7B7A7A</color>
+
+    <color name="bg_window">#2D2D39</color>
 
     <color name="yellow_menu">#F2C94C</color>
 
+    <color name="grey_50"> #FAFAFA</color>
     <color name="grey_100"> #F5F5F5</color>
     <color name="grey_300"> #E0E0E0</color>
+    <color name="grey_400"> #D8D8D8</color>
+
     <color name="red_100">#F4C7C3</color>
     <color name="red_300">#E67C73</color>
     <color name="red_500">#DB4437</color>

@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.gymguide.R
 import com.example.gymguide.databinding.FragmentScanBinding
 import java.io.IOException
 
@@ -64,6 +65,17 @@ class ScanFragment : Fragment() {
             val intent = Intent(requireContext(), MuscleMapActivity::class.java)
             startActivity(intent)
         }
+
+        binding.ivNearbyLocation.setOnClickListener {
+            showMapsFragment()
+        }
+    }
+
+    private fun showMapsFragment() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_container, MapsFragment(), MapsFragment::class.java.simpleName)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun showPickImageDialogEquip() {
@@ -151,5 +163,10 @@ class ScanFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

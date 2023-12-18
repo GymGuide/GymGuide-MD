@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/scan_activity_reference" />
 
-    <android.widget.SearchView
+    <SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/search_rectangle_background"
         android:iconifiedByDefault="false"
-        android:hint="Search exercise/food/trainer/article"
+        android:queryHint="Exercise/Food/Trainer/Article/Gym"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

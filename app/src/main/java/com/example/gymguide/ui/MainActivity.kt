@@ -45,27 +45,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fab.setOnClickListener {
-            selectedButton?.run {
-                animateButton(this, 1f)
-                setTextColor(ContextCompat.getColor(context, R.color.grey_menu))
-                setTextViewDrawableColor(this, R.color.grey_menu)
-            }
+            selectButton()
             showScanFragment()
         }
     }
 
-    private fun selectButton(textview: TextView) {
+    private fun selectButton(textview: TextView? = null) {
         selectedButton?.run {
             animateButton(this, 1f)
             setTextColor(ContextCompat.getColor(context, R.color.grey_menu))
             setTextViewDrawableColor(this, R.color.grey_menu)
         }
 
-        textview.setTextColor(ContextCompat.getColor(textview.context, R.color.yellow_menu))
-        setTextViewDrawableColor(textview, R.color.yellow_menu)
-        animateButton(textview, 1.25f)
+        if (textview != null) {
+            textview.setTextColor(ContextCompat.getColor(textview.context, R.color.yellow_menu))
+            setTextViewDrawableColor(textview, R.color.yellow_menu)
+            animateButton(textview, 1f)
 
-        selectedButton = textview
+            selectedButton = textview
+        } else {
+            selectedButton = null
+        }
     }
 
     private fun animateButton(textView: TextView, scaleTo: Float) {

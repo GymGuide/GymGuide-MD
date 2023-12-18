@@ -12,4 +12,7 @@
 
     <string name="user_exp_format">%1$s EXP</string>
 
+    <string name="lorem">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sit amet mauris commodo quis imperdiet massa tincidunt. Vel risus commodo viverra maecenas accumsan lacus. \n\nNisl pretium fusce id velit ut tortor. Nisl pretium fusce id velit ut tortor. Vel risus commodo viverra maecenas accumsan lacus. Nisl pretium fusce id velit ut tortor.</string>
+    <string name="ipsum">Vel risus commodo viverra maecenas accumsan lacus. Nisl pretium fusce id velit ut tortor. Vel risus commodo viverra maecenas accumsan lacus. Nisl pretium fusce id velit ut tortor. Vel risus commodo viverra maecenas accumsan lacus. Nisl pretium fusce id velit ut tortor.</string>
+
 </resources>
