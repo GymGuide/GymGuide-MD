@@ -31,7 +31,7 @@
 
 
             val extras = intent.extras
-            var id: String? = extras?.getString("id")
+            val id: String? = extras?.getString("id")
             val name: String? = extras?.getString("name")
             val type: String? = extras?.getString("type")
             val muscle: String? = extras?.getString("muscle")
@@ -40,6 +40,7 @@
             val instructions: String? = extras?.getString("instructions")
             val link: String? = extras?.getString("link")
             val picture: String? = extras?.getString("picture")
+            val animation: String? = extras?.getString("animation")
             val video =
                 "<iframe width=\"100%\" height=\"100%\" src=\"$link\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>"
             binding.webView.loadData(video, "text/html", "utf-8")
@@ -65,6 +66,21 @@
                 fetchDataFromAPI(equipment)
             }
 
+            binding.buttonStartExercise.setOnClickListener{
+                val intent = Intent(this, StartExerciseActivity::class.java)
+                intent.putExtra("id",id)
+                intent.putExtra("name",name)
+                intent.putExtra("type",type)
+                intent.putExtra("muscle",muscle)
+                intent.putExtra("equipment",equipment)
+                intent.putExtra("difficulty",difficulty)
+                intent.putExtra("instructions",instructions)
+                intent.putExtra("link",link)
+                intent.putExtra("picture",picture)
+                intent.putExtra("animation",animation)
+                startActivity(intent)
+            }
+
         }
 
         private fun setupRecyclerView() = binding.rvExercise.apply {
@@ -81,6 +97,7 @@
                     intent.putExtra("instructions",exercise.instructions)
                     intent.putExtra("link",exercise.link)
                     intent.putExtra("picture",exercise.picture)
+                    intent.putExtra("animation",exercise.animation)
                     startActivity(intent)
                 }
             })
@@ -93,7 +110,7 @@
                 lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
                     try {
                         binding.progressBar.visibility = View.VISIBLE
-                        val response = RetrofitInstance.api.getExercise(equipment!!)
+                        val response = RetrofitInstance.api.getEquipment(equipment!!)
 
                         if (response.isSuccessful) {
                             val body = response.body()

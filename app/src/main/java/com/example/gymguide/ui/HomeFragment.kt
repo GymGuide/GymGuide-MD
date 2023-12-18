@@ -91,6 +91,7 @@ class HomeFragment : Fragment() {
                 intent.putExtra("instructions", exercise.instructions)
                 intent.putExtra("link", exercise.link)
                 intent.putExtra("picture", exercise.picture)
+                intent.putExtra("animation", exercise.animation)
                 startActivity(intent)
             }
         })

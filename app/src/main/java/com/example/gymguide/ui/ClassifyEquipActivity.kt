@@ -64,7 +64,7 @@ class ClassifyEquipActivity : AppCompatActivity() {
                 try {
                     binding.progressBar.visibility = View.VISIBLE
 
-                    val response = RetrofitInstance.api.getExercise(prediction)
+                    val response = RetrofitInstance.api.getEquipment(prediction)
 
                     if (response.isSuccessful) {
                         val body = response.body()
@@ -111,6 +111,7 @@ class ClassifyEquipActivity : AppCompatActivity() {
                 intent.putExtra("instructions",exercise.instructions)
                 intent.putExtra("link",exercise.link)
                 intent.putExtra("picture",exercise.picture)
+                intent.putExtra("animation",exercise.animation)
                 startActivity(intent)
             }
         })

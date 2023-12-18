@@ -33,7 +33,10 @@ data class Exercise(
 	val link: String,
 
 	@SerializedName("picture")
-	val picture: String
+	val picture: String,
+
+	@SerializedName("animation")
+	val animation: String
 )
 
 // Status class remains the same
