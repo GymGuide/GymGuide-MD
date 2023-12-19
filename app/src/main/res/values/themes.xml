@@ -16,6 +16,18 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="fab_diamond">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="fab_chat">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="android:bottomRightRadius">0dp</item>
+    </style>
+
+
     <style name="circularImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

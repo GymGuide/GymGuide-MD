@@ -1,22 +1,28 @@
 package com.example.gymguide.ui
 
+import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.gymguide.R
 import com.example.gymguide.databinding.FragmentMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -32,11 +38,14 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
+    private var isLocationPermissionGranted = false
 
-    private val requestLocationPermission =
+    private val requestLocationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 Log.e("MapsFragment", "Location permission allowed")
+                isLocationPermissionGranted = true
+                initializeMap()
             } else {
                 Log.e("MapsFragment", "Location permission denied")
                 Toast.makeText(
@@ -47,19 +56,14 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
             }
         }
 
+
     private val callback = OnMapReadyCallback { googleMap ->
-
+        setMapStyle(googleMap)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (isLocationPermissionGranted) {
             Log.d("MapFragment", "Permission is already granted.")
             updateLocation { userLocation ->
-                addRandomMarkersNearby(googleMap, userLocation) // FFBA69
-
+                addRandomMarkersNearby(googleMap, userLocation)
                 googleMap.addMarker(MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.user_node))
                     .position(userLocation)
@@ -67,24 +71,28 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation))
                 googleMap.setOnInfoWindowClickListener(this)
             }
+
+            googleMap.setOnMapClickListener {
+                displayCustomInfoWindow(false)
+            }
+
+            // TODO: Implement pass data
+            googleMap.setOnMarkerClickListener {
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(it.position), 300, null)
+                displayCustomInfoWindow(true)
+            }
+
+            googleMap.isIndoorEnabled = false
+            googleMap.isBuildingsEnabled = false
+            googleMap.uiSettings.isCompassEnabled = false
         } else {
-            requestLocationPermission.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            Log.e("MapFragment", "Location permission not granted.")
         }
+    }
 
-        googleMap.setOnMapClickListener {
-            displayCustomInfoWindow(false)
-        }
-
-        // TODO: Implement pass data
-        googleMap.setOnMarkerClickListener {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(it.position), 300, null)
-            displayCustomInfoWindow(true)
-        }
-
-        googleMap.isIndoorEnabled = false
-        googleMap.isBuildingsEnabled = false
-        googleMap.uiSettings.isCompassEnabled = false
-        setMapStyle(googleMap)
+    private fun initializeMap() {
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
     }
 
     override fun onCreateView(
@@ -98,8 +106,12 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+        if (hasLocationPermission()) {
+            isLocationPermissionGranted = true
+            initializeMap()
+        } else {
+            requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
     }
 
     override fun onInfoWindowClick(marker: Marker) {
@@ -126,23 +138,68 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
     }
 
     private fun updateLocation(callback: (LatLng) -> Unit) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                if (it != null) {
-                    Log.d("MapFragment", "Success getting location ${it.latitude} ${it.longitude}")
-                    val userLocation = LatLng(it.latitude, it.longitude)
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    Log.d("MapFragment", "Success getting location ${location.latitude} ${location.longitude}")
+                    val userLocation = LatLng(location.latitude, location.longitude)
                     callback(userLocation)
                 } else {
-                    Log.e("MapsFragment", "Last known location is null")
+                    // Last known location is null, request location updates
+                    requestLocationUpdates(callback)
                 }
             }
         } else {
-            requestLocationPermission.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
+    }
+
+    private fun requestLocationUpdates(callback: (LatLng) -> Unit) {
+        val locationRequest = LocationRequest.create()
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            .setInterval(5000) // Update interval in milliseconds
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                val location = locationResult.lastLocation
+                if (location != null) {
+                    Log.d("MapFragment", "Location update ${location.latitude} ${location.longitude}")
+                }
+                if (location != null) {
+                    callback(LatLng(location.latitude, location.longitude))
+                }
+                fusedLocationClient.removeLocationUpdates(this)
+            }
+        }
+
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
     private fun addRandomMarkersNearby(googleMap: GoogleMap, centerLocation: LatLng) {
@@ -191,6 +248,14 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
         }
         return true
     }
+
+    private fun hasLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
