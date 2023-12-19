@@ -38,14 +38,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:id="@+id/tv_welcome"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Welcome, John Doe!"
                 android:textColor="@color/white"
                 android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView7"
                 app:layout_constraintStart_toStartOf="@+id/tv_current_date"
                 app:layout_constraintTop_toBottomOf="@+id/tv_current_date" />
 

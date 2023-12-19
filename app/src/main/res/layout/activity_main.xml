@@ -28,6 +28,7 @@
         tools:ignore="VisualLintBottomAppBar">
 
         <LinearLayout
+            android:weightSum="5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -43,7 +44,11 @@
                 android:text="Home"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
-                android:textSize="12sp"
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="6sp"
+                android:autoSizeStepGranularity="2sp"
+
+                android:autoSizeTextType="uniform"
                 app:drawableTint="@color/grey_menu"
                 app:drawableTopCompat="@drawable/ic_baseline_home_24" />
 
@@ -56,9 +61,13 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:text="Discover"
+                android:maxLines="1"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
-                android:textSize="12sp"
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="6sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
                 app:drawableTint="@color/grey_menu"
                 app:drawableTopCompat="@drawable/ic_baseline_dashboard_24" />
 
@@ -86,7 +95,11 @@
                 android:text="Rank"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
-                android:textSize="12sp"
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="6sp"
+                android:autoSizeStepGranularity="2sp"
+
+                android:autoSizeTextType="uniform"
                 app:drawableTint="@color/grey_menu"
                 app:drawableTopCompat="@drawable/baseline_shield_24" />
 
@@ -101,7 +114,11 @@
                 android:text="Settings"
                 android:textAllCaps="false"
                 android:textColor="#9E9E9E"
-                android:textSize="12sp"
+                android:autoSizeMaxTextSize="12sp"
+                android:autoSizeMinTextSize="6sp"
+                android:autoSizeStepGranularity="2sp"
+
+                android:autoSizeTextType="uniform"
                 app:drawableTint="@color/grey_menu"
                 app:drawableTopCompat="@drawable/ic_baseline_account_circle_24" />
         </LinearLayout>

@@ -63,14 +63,18 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            app:shapeAppearanceOverlay="@style/fab_chat"
+            app:shapeAppearanceOverlay="@style/fab_rounded"
+            android:backgroundTint="@color/yellow_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
+            app:tint="@color/black"
+            android:contentDescription="chat a.i"
             android:src="@drawable/baseline_chat_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
