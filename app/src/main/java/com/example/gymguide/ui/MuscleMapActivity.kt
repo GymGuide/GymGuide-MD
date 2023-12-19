@@ -81,5 +81,10 @@ class MuscleMapActivity : AppCompatActivity() {
             startActivity(intent)
             Toast.makeText(this, "abdominals", Toast.LENGTH_SHORT).show()
         }
+
+        binding.backMuscleButton.setOnClickListener{
+            Toast.makeText(this, "Back muscle map is still under development", Toast.LENGTH_SHORT).show()
+
+        }
     }
 }
