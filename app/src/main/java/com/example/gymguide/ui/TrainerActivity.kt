@@ -1,5 +1,6 @@
 package com.example.gymguide.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -32,5 +33,10 @@ class TrainerActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = TrainerCategory.CATEGORIES[position]
         }.attach()
+
+        binding.fabChatAi.setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

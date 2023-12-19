@@ -180,8 +180,35 @@ class ClassifyEquipActivity : AppCompatActivity() {
                 "squat-rack",
                 "torso-rotation-machine"
             )
+
+            val classesText = arrayOf(
+                "Abdominal Machine",
+                "Arm Curl",
+                "Arm Extension",
+                "Back Extension",
+                "Back Row Machine",
+                "Bench Press",
+                "Cable Lat Pulldown",
+                "Chest Fly",
+                "Chest Press",
+                "Dip Chin Assist",
+                "Hip Abduction Adduction",
+                "Incline Bench",
+                "Lat Pulldown",
+                "Leg Extension",
+                "Leg Press",
+                "Lying Down Leg Curl",
+                "Overhead Shoulder Press",
+                "Pulley Machine",
+                "Seated Cable Row",
+                "Seated Leg Curl",
+                "Smith Machine",
+                "Squat Rack",
+                "Torso Rotation Machine"
+            )
             prediction = classes[maxPos]
-            binding.tvResult.text = prediction
+            val predictionText = classesText[maxPos]
+            binding.tvResult.text = predictionText
             model.close()
 
             // Releases model resources if no longer used.

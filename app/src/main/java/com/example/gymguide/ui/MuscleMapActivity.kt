@@ -15,51 +15,71 @@ class MuscleMapActivity : AppCompatActivity() {
         binding = ActivityMuscleMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val intent = Intent(this, MuscleDetailActivity::class.java)
+
         // Set up CustomImageViews and attach click listener
         binding.ivCalves.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivCalves", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","calves")
+            intent.putExtra("muscle-text","Calves")
+            startActivity(intent)
+            Toast.makeText(this, "calves", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivQuads.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivQuads", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","quads")
+            intent.putExtra("muscle-text","Quads")
+            startActivity(intent)
+            Toast.makeText(this, "quads", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivChest.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivChest", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","chest")
+            intent.putExtra("muscle-text","Chest")
+            startActivity(intent)
+            Toast.makeText(this, "chest", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivTraps.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivTraps", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","traps")
+            intent.putExtra("muscle-text","Traps")
+            startActivity(intent)
+            Toast.makeText(this, "traps", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivShoulders.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivShoulders", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","shoulders")
+            intent.putExtra("muscle-text","Shoulders")
+            startActivity(intent)
+            Toast.makeText(this, "shoulders", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivBiceps.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivBiceps", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","biceps")
+            intent.putExtra("muscle-text","Biceps")
+            startActivity(intent)
+            Toast.makeText(this, "biceps", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivForearms.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivForearms", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","forearms")
+            intent.putExtra("muscle-text","Forearms")
+            startActivity(intent)
+            Toast.makeText(this, "forearms", Toast.LENGTH_SHORT).show()
         }
 
 
         binding.ivObliques.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivObliques", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","obliques")
+            intent.putExtra("muscle-text","Obliques")
+            startActivity(intent)
+            Toast.makeText(this, "obliques", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivAbdominals.setOnClickListener {
-            startActivity(Intent(this, MuscleDetailActivity::class.java))
-            Toast.makeText(this, "ivAbdominals", Toast.LENGTH_SHORT).show()
+            intent.putExtra("muscle","abdominals")
+            intent.putExtra("muscle-text","Abdominals")
+            startActivity(intent)
+            Toast.makeText(this, "abdominals", Toast.LENGTH_SHORT).show()
         }
     }
 }
