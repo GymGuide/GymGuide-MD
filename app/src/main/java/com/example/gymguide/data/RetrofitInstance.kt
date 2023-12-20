@@ -12,4 +12,13 @@ object RetrofitInstance {
             .build()
             .create(ExerciseApi::class.java)
     }
+
+    val model: ModelApi by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://ml-api-crng4qpv6q-et.a.run.app")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ModelApi::class.java)
+    }
+
 }
