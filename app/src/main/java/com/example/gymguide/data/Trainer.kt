@@ -4,5 +4,6 @@ data class Trainer(
     val name: String,
     val location: String,
     val picture: String,
-    val rating: Double
+    val rating: Double,
+    val description: String
 )

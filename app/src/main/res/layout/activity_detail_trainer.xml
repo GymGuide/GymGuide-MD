@@ -21,7 +21,7 @@
         app:srcCompat="@drawable/reference_detail_trainer" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_classified_image"
+        android:id="@+id/iv_trainer_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
@@ -40,12 +40,12 @@
         android:fontFamily="@font/roboto"
         android:text="Cardio Specialist"
         android:textColor="@color/grey_text"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_classified_image"
-        app:layout_constraintStart_toEndOf="@+id/iv_classified_image"
-        app:layout_constraintTop_toTopOf="@+id/iv_classified_image" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_trainer_image"
+        app:layout_constraintStart_toEndOf="@+id/iv_trainer_image"
+        app:layout_constraintTop_toTopOf="@+id/iv_trainer_image" />
 
     <TextView
-        android:id="@+id/textView27"
+        android:id="@+id/tv_trainer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -70,7 +70,7 @@
             android:src="@drawable/outline_location_on_24" />
 
         <TextView
-            android:id="@+id/textView29"
+            android:id="@+id/tv_trainer_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -79,7 +79,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView32"
+        android:id="@+id/tv_trainer_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -90,7 +90,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_classified_image" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_trainer_image" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"
@@ -102,10 +102,10 @@
         android:weightSum="12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView32">
+        app:layout_constraintTop_toBottomOf="@+id/tv_trainer_description">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button2"
+            android:id="@+id/button_appointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="10"
@@ -117,6 +117,7 @@
             android:textSize="12sp" />
 
         <ImageView
+            android:id="@+id/button_chat"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

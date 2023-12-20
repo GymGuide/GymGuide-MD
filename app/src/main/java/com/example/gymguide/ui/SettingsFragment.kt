@@ -28,6 +28,11 @@ class SettingsFragment : Fragment() {
 
         auth = Firebase.auth
 
+        binding.editProfileButton.setOnClickListener {
+            val intent = Intent(context, EditProfileActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.logoutButton.setOnClickListener{
             auth.signOut()
             val intent = Intent(requireContext(), WelcomeActivity::class.java)

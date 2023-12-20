@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlin.math.log
 
 class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -117,6 +118,7 @@ class MapsFragment : Fragment(), GoogleMap.OnInfoWindowClickListener {
         val intent = Intent(requireContext(), DetailTrainerActivity::class.java)
         intent.putExtra("name", "Brendon Guidelines")
         intent.putExtra("nim", "SCP-079")
+        Log.d("MapsFragmentHere", "i'm oninfowindowclick")
         startActivity(intent)
     }
 

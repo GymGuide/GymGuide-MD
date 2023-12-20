@@ -66,6 +66,14 @@ class ScanFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.ivScanMeal.setOnClickListener {
+            Toast.makeText(
+                context,
+                "scan food is still under development",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
         binding.ivNearbyLocation.setOnClickListener {
             showMapsFragment()
         }

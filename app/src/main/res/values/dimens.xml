@@ -17,5 +17,6 @@
     <dimen name="shutter_button_margin">80dp</dimen>
 
     <dimen name="editTextPadding">20dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

@@ -36,7 +36,7 @@ class RankFragment : Fragment() {
         rankAdapter = RankAdapter()
         rankAdapter.setClickListener(object : RankAdapter.ClickListener {
             override fun onItemClicked(rank: Rank) {
-                val intent = Intent(requireContext(), DetailTrainerActivity::class.java)
+                val intent = Intent(requireContext(), RankDetailActivity::class.java)
                 intent.putExtra("name",rank.name)
                 intent.putExtra("nim",rank.nim)
                 startActivity(intent)

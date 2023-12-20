@@ -43,6 +43,11 @@ class TrainerView : Fragment() {
                 val intent = Intent(requireContext(), DetailTrainerActivity::class.java)
                 intent.putExtra("name",trainer.name)
                 intent.putExtra("location",trainer.location)
+                intent.putExtra("picture",trainer.picture)
+                intent.putExtra("rating",trainer.rating)
+                intent.putExtra("description",trainer.description)
+
+
                 startActivity(intent)
             }
         })

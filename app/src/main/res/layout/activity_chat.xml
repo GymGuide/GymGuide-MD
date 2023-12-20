@@ -35,7 +35,8 @@
         android:layout_height="75dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:src="@drawable/sample_trainer_photo"
+        android:scaleType="centerCrop"
+        android:src="@drawable/robot_fitness"
         app:layout_constraintStart_toEndOf="@+id/button_back"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/circularImageView" />
@@ -50,23 +51,23 @@
         app:layout_constraintTop_toTopOf="@+id/iv_user">
 
         <TextView
-            android:id="@+id/textView44"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
-            android:text="Brodi Balo"
+            android:text="GymChat Guru (Bot)"
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:layout_editor_absoluteX="110dp"
             tools:layout_editor_absoluteY="32dp" />
 
         <TextView
-            android:id="@+id/textView47"
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:paddingTop="4dp"
-            android:text="Active Now"
+            android:text="Ask Your Fitness Need"
             android:textColor="@color/grey_text"
             tools:layout_editor_absoluteX="110dp"
             tools:layout_editor_absoluteY="88dp" />
