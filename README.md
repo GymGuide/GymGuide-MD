@@ -2,6 +2,14 @@
 
 <p align="justify"> This repository contains a collection of resources used during the capstone project for Bangkit Mobile Development. This project focuses on creating an Android App using Android Studio which will be the main presentation of other team. </p>
 
+### Tools and Libraries
+- Made in Android Studio
+- Language Programming using Kotlin
+- [Retrofit](https://square.github.io/retrofit/) to establish connection with the APK
+- [Glide](https://bumptech.github.io/glide/) for retrieving image from URL
+- [Google Maps API](https://developers.google.com/maps/documentation/urls/get-started) Harness the power of interactive maps to enhance user experience and provide location-based features.
+- [TensorFlow Lite](https://www.tensorflow.org/lite/api_docs) Leverage machine learning capabilities for on-device inference, tflite model is used when user don't have internet connection to connect with the Model API.
+
 **Login and Register**
 
 <p align="justify"> GymGuide simplifies your login and registration experience! With convenience and security as our top priorities, we offer efficient login and registration options through Facebook, Google, and xxx. Enjoy instant access to our services without the hassle of remembering additional passwords. With GymGuide, using your favorite account from Facebook, Google, or xxx is just a click away. </p>
